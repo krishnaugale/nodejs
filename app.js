@@ -5,7 +5,6 @@ const bodyParser = require("body-parser");
 const dbConnect = require("./src/mongoDB/connection");
 
 app.use(bodyParser.urlencoded({ extended: false }));
-
 app.use(bodyParser.json());
 
 dbConnect()
@@ -18,6 +17,6 @@ app.use("/healthCheck", (req, res) => {
   res.status(200).send({ code: 200, message: "Its working" });
 });
 
-app.use("/", routes);
+app.use("/bankingapp/api", routes);
 
 app.listen(3000, () => console.log("Server Listing On Port Number 3000"));
