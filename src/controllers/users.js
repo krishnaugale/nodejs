@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const userSchema = require('../mongoDB/models/users');
 
 const registerUser = async (req, res) => {
@@ -5,11 +7,11 @@ const registerUser = async (req, res) => {
     const userInfo =  {
       firstname : req.body.firstname,
       lastname : req.body.lastname,
-      emailid:  req.body.email,
+      emailId:  req.body.emailId,
       dateOfBirth :  req.body.dateOfBirth,
       username:  req.body.username,
       password :  req.body.password,
-      phoneno  :req.body.phoneno,
+      phoneNo  :req.body.phoneNo,
       address : { 
         firstline :req.body.address.firstline ,
         secondline :req.body.address.secondline,
@@ -18,6 +20,7 @@ const registerUser = async (req, res) => {
         pin : req.body.address.pin,
       }
     }
+    console.log(userInfo.emailId +" and "+userInfo.phoneNo);
 
     const userData = await userSchema.users.create(userInfo);
     res.status(200).send({ code: 200, message: "Data Saved sucessfully" ,userData});
@@ -28,28 +31,254 @@ const registerUser = async (req, res) => {
   }
 };
 
-const validateUser = (req, res) => {
+const validateUser = async (req, res) => {
+  
   try {
-    throw Error("Error");
+    const userInfo = {
+      username:  req.body.username,
+      password :  req.body.password,
+    }
+    
+
+    const userData = await userSchema.users.findOne(userInfo);
+
+    if(userData) {
+      res.status(400).send({ code: 400, message: "User already exists" });  
+    } else {
+      res.status(200).send({ code: 200, message: "USer not exists" });
+    }
+
+  } catch (error) {
+    
+    res.status(500).send({ code: 500, message: "Internal server error",error });
+  }
+};
+
+const updatePassword = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const password = req.body.password;
+    
+    const obj = {};
+    
+    if (password) {
+      Object.assign(obj, { password });
+    }
+  
+    const updateData = await userSchema.users.updateOne(
+      {
+        _id: mongoose.Types.ObjectId(id),
+      },
+      {
+        $set: obj,
+      }
+    );
+    if(updateData) {
+      res.status(200).send({ code: 200, message: "User password Updated", updateData })  
+    } else {
+      res.status(400).send({ code: 400, message: "Error Can not update" });
+    }
+    
   } catch (error) {
     res.status(500).send({ code: 500, message: "Internal server error" });
   }
 };
 
-const updatePassword = (req, res) => {
+
+
+const updateUser = async (req, res) => {
   try {
-    throw Error("Error");
+    const id = req.params.id;
+    console.log(id);
+    const { firstname, lastname, emailId,username ,dateOfBirth,password,
+      phoneNo,address} = req.body;
+      console.log(address);
+  
+    const obj = {};
+    if (firstname) {
+      Object.assign(obj, { firstname });
+    }
+    if (lastname) {
+      Object.assign(obj, { lastname });
+    }
+    if (emailId) {
+      Object.assign(obj, { emailId });
+    }
+    if (username) {
+      Object.assign(obj, { username });
+    }
+    if (dateOfBirth) {
+      Object.assign(obj, { dateOfBirth });
+    }
+    if (password) {
+      Object.assign(obj, { password });
+    }
+    if (phoneNo) {
+      Object.assign(obj, { phoneNo });
+    }
+    if (address) {
+      Object.assign(obj, { address });
+    }
+  
+    const updateData = await userSchema.users.updateOne(
+      {
+        _id: mongoose.Types.ObjectId(id),
+      },
+      {
+        $set: obj,
+      }
+    );
+    if(updateData) {
+      res.status(200).send({ code: 200, message: "User Updated", updateData })  
+    } else {
+      res.status(400).send({ code: 400, message: "Error Can not update" });
+    }
+    
   } catch (error) {
     res.status(500).send({ code: 500, message: "Internal server error" });
   }
 };
 
-const updateEmail = (req, res) => {
+const updateEmail = async (req, res) => {
   try {
-    throw Error("Error");
+    const id = req.params.id;
+    const email = req.body.emailId;  
+   // const obj = {};
+    
+    if (!email) {
+     // Object.assign(obj, { email });
+     res.status(400).send({ code: 400, message: "Email is empty" });
+    }
+  
+     await userSchema.users.updateOne(
+      {
+        _id: mongoose.Types.ObjectId(id),
+      },
+      {
+        $set: {emailId : email},
+      }
+    );
+    
   } catch (error) {
     res.status(500).send({ code: 500, message: "Internal server error" });
   }
+
+
+  res.status(200).send({ code: 200, message: "email Updated" }) 
 };
 
-module.exports = { registerUser, validateUser, updatePassword, updateEmail };
+
+const updatephone = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const phone = req.body.phoneNo;  
+   // const obj = {};
+    
+    if (!phone) {
+     // Object.assign(obj, { email });
+     res.status(400).send({ code: 400, message: "phone is empty" });
+    }
+  
+     await userSchema.users.updateOne(
+      {
+        _id: mongoose.Types.ObjectId(id),
+      },
+      {
+        $set: {phoneNo : phone},
+      }
+    );
+    
+  } catch (error) {
+    res.status(500).send({ code: 500, message: "Internal server error" });
+  }
+
+
+  res.status(200).send({ code: 200, message: "phone Updated" }) 
+};
+
+const updateAddress = async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const {firstline,secondline,city,country,pin} = req.body;  
+    const obj = {};
+    
+   if (firstline) {
+    Object.assign(obj, { firstline });
+  }
+  if (secondline) {
+    Object.assign(obj, { secondline });
+  }
+  if (city) {
+    Object.assign(obj, { city });
+  }
+  if (country) {
+    Object.assign(obj, { country });
+  }
+  if (pin) {
+    Object.assign(obj, { pin });
+  }
+  
+     await userSchema.users.updateOne(
+      {
+        _id: mongoose.Types.ObjectId(id),
+      },
+      {
+        $set: obj,
+      }
+    );
+    
+  } catch (error) {
+    res.status(500).send({ code: 500, message: "Internal server error" });
+  }
+
+
+  res.status(200).send({ code: 200, message: "Address Updated" }) 
+};
+
+
+const getbyphoneno = async (req, res) => {
+  const phone = req.body.phoneNo;
+ 
+  const userData = await userSchema.users.find({ phoneNo: phone});
+  
+  if(userData) {
+    res.status(200).send({ code: 200, message: "User Details Feteched" ,data:userData});
+  } else {
+    res.status(400).send({ code: 400, message: "Error Can not fetch" });
+  }
+  
+};
+
+
+const getbyname = async (req, res) => {
+  const fname = req.body.firstname;
+  const lname = req.body.lastname;
+
+  console.log(fname + lname);
+  const userData = await userSchema.users.find({firstname : fname , lastname : lname});
+  //console.log(userData);
+  if(userData) {
+    res.status(200).send({ code: 200, message: "User Details Feteched" ,data:userData});
+  } else {
+    res.status(400).send({ code: 400, message: "Error Can not fetch" });
+  }
+ 
+};
+
+const getbyusername = async (req, res) => {
+  const uname = req.body.username;
+
+  const userData = await userSchema.users.find({username : uname});
+  
+  if(userData) {
+    res.status(200).send({ code: 200, message: "User Feteched" ,data:userData});
+  } else {
+    res.status(400).send({ code: 400, message: "Error Can not fetch" });
+  }
+ 
+};
+
+module.exports = { registerUser, validateUser, updatePassword,
+ updateEmail ,updatephone ,getbyname,getbyphoneno,
+ getbyusername,updateUser,updateAddress};
