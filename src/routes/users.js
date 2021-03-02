@@ -5,14 +5,32 @@ const {
   validateUser,
   updatePassword,
   updateEmail,
+  updatephone,
+  getbyname,
+  getbyphoneno,
+  getbyusername,
+  updateUser,
+  updateAddress
 } = require("../controllers/users");
 
 router.post("/user/register", registerUser);
 
 router.post("/user/validateUser", validateUser);
 
-router.post("/user/updatePassword", updatePassword);
+router.put("/user/updatePassword/:id", updatePassword);
 
-router.post("/user/updateEmail", updateEmail);
+router.put("/user/updateUser/:id", updateUser);
+
+router.put("/user/updateEmail/:id", updateEmail);
+
+router.put("/user/updatePhone/:id", updatephone);
+
+router.put("/user/updateAddress/:id", updateAddress);
+
+router.get("/user/getuserbyname", getbyname);
+
+router.get("/user/getuserbyusername", getbyusername);
+
+router.get("/user/getuserbyphoneno", getbyphoneno);
 
 module.exports = router;
