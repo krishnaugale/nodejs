@@ -10,14 +10,15 @@ const {
   getbyphoneno,
   getbyusername,
   updateUser,
-  updateAddress
+  updateAddress,
 } = require("../controllers/users");
+const auth = require("../middelware/auth");
 
 router.post("/user/register", registerUser);
 
 router.post("/user/validateUser", validateUser);
 
-router.put("/user/updatePassword/:id", updatePassword);
+router.put("/user/updatePassword/:id", auth, updatePassword);
 
 router.put("/user/updateUser/:id", updateUser);
 
