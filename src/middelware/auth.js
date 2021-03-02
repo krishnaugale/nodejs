@@ -19,5 +19,5 @@ const auth=  (req, res, next) =>{
       }
     };
 
-   // const token = jwt.sign({ foo: 'bar' }, 'shhhhh')
+   // const  = jwt.sign({ : 'bar' }, 'shhhhh')
 
