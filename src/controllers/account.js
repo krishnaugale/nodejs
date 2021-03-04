@@ -87,7 +87,9 @@ try{
 const addPayees = async (req, res) => {
   try {
   
+    
     const accNumber = req.params.accountNo;
+    console.log(accNumber);
      // const payees = await accountSchema.accounts.find({ accountNo: accNumber})
     const payees = await accountSchema.accounts.updateOne(
       { accountNo: accNumber, isClosed: false },
