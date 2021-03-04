@@ -75,47 +75,11 @@ try{
     },
     remark : req.body.remark
   }
-  //console.log(transferInfo);
-  const fromData = await accountSchema.accounts.find({accountNo :transferInfo.from.accountNo })
-  const toData = await accountSchema.accounts.find({accountNo :transferInfo.to.accountNo })
   
-
-  if(!fromData || !toData) {
-    res.status(400).send({code: 400, message : "Invalid Account Number"})
-  }
-
-  if(fromData[0].closingBalance < transferInfo.from.amount) {
-    res.status(400).send({code:400, message:"Can not transfer amount grether than Closing balence",fromData,transferInfo})
-  }
-
-  const newFromBalance =parseFloat(fromData[0].closingBalance) - parseFloat(transferInfo.from.amount);
-  const newtoBalance = parseFloat(toData[0].closingBalance) + parseFloat(transferInfo.to.amount);
- 
-  console.log("Data is "+ newFromBalance +" "+newtoBalance);
- 
-  const fromUpdatedData = await accountSchema.accounts.updateOne(
-    {
-      accountNo: transferInfo.from.accountNo,
-    },
-    {
-      $set:{closingBalance : newFromBalance},
-    }
-  );
-
-  const toupdateData = await accountSchema.accounts.updateOne(
-    {
-      accountNo: transferInfo.to.accountNo,
-    },
-    {
-      $set:{closingBalance : newtoBalance},
-    }
-  );
-
-  res.status(200).send({ code: 200, message: "Transfer Successfull",toupdateData,fromUpdatedData});
 
 }catch(error)
  {
-  res.status(500).send({ code: 500, message: "Internal server error"});
+  res.status(500).send({ code: 500, message: "Internal server error" });
 }
 
 };
@@ -123,11 +87,13 @@ try{
 const addPayees = async (req, res) => {
   try {
   
+    
     const accNumber = req.params.accountNo;
+    console.log(accNumber);
      // const payees = await accountSchema.accounts.find({ accountNo: accNumber})
     const payees = await accountSchema.accounts.updateOne(
       { accountNo: accNumber, isClosed: false },
-       { $addToSet: 
+        { $addToSet: 
        { payees: {
        "firstname" : "rishabh" ,
        "lastname" : "Sancheti",
@@ -143,27 +109,27 @@ const addPayees = async (req, res) => {
     
 };
 
+
 const getPayees = async (req, res) => {
-  try
-  {
-    const accNumber = "1614740266399";
-    console.log(accNumber);
-    const payees = await accountSchema.accounts.find({ accountNo : accNumber });
-    console.log(payees); 
-    if (payees) 
-     {
-       res.status(200).send({ code: 200, message: "Account Feteched", data: accountData });
-     } 
-    else
-     {
-        res.status(400).send({ code: 400, message: "Error Can not fetch" });
-     }
- 
-  }catch(error)
-  {
-   res.status(500).send({ code: 500, message: "Internal server error" });
-  }
- };
+ try
+ {
+   const accNumber = req.body.accountNo;
+   const accountData = await accountSchema.accounts.find({ accountNo : accNumber });
+   console.log("fetched"); 
+   if (accountData.payees) 
+    {
+      res.status(200).send({ code: 200, message: "Account Feteched", data: accountData });
+    } 
+   else
+    {
+       res.status(400).send({ code: 400, message: "Error Can not fetch" });
+    }
+
+ }catch(error)
+ {
+  res.status(500).send({ code: 500, message: "Internal server error" });
+ }
+};
 
 const deletePayees = async (req, res) => 
 { 

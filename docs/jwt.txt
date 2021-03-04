@@ -1,0 +1,12 @@
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYwM2UzOTU1ZWI5ODY4M2VlNGFhZWEzZSIsInVzZXJuYW1lIjoibW9iYW5rIiwiZW1haWxJZCI6Inh5ekBnbWFpbC5jb20iLCJpYXQiOjE2MTQ2OTA2NDZ9.jFiRf6Flf39MZewB6LsWlak8gB7SFyJy43kJHMKs-RI
+
+
+{
+    "address" : {
+        "firstline" : "nashik",
+        "secondline" : "nashik",
+        "city" : "nashik",
+        "country" : "IN",
+        "pin" : "522009"
+    }
+}
