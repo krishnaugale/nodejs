@@ -1,6 +1,7 @@
 const router = require("./users");
 const users = require("./users");
+const account = require("./account");
 
-const routes = [users];
+const routes = [users, account];
 
 module.exports = routes;
