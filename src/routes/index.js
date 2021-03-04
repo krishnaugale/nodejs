@@ -1,4 +1,3 @@
-const router = require("./users");
 const users = require("./users");
 const account = require("./account");
 
