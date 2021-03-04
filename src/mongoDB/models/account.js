@@ -8,7 +8,7 @@ const accountSchema = new mongoose.Schema({
   closingBalance: { type: String, default: "0" },
   createdOn: { type: Date, default: Date.now() },
   lastActive: { type: Date, default: Date.now() },
-  payees: [ 
+  payees: [
     {
       firstname: String,
       lastname: String,
