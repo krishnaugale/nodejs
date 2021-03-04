@@ -33,7 +33,9 @@ const registerUser = async (req, res) => {
       .status(200)
       .send({ code: 200, message: "Data Saved sucessfully", token, userData });
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    return res
+      .status(500)
+      .send({ code: 500, message: "Internal server error" });
   }
 };
 
@@ -47,10 +49,11 @@ const validateUser = async (req, res) => {
     const userData = await userSchema.users.findOne(userInfo);
 
     if (userData) {
-      res.status(400).send({ code: 400, message: "User already exists" });
-    } else {
-      res.status(200).send({ code: 200, message: "USer not exists" });
+      return res
+        .status(200)
+        .send({ code: 400, message: "User already exists", userData });
     }
+    return res.status(400).send({ code: 200, message: "USer not exists" });
   } catch (error) {
     res
       .status(500)
@@ -78,12 +81,11 @@ const updatePassword = async (req, res) => {
       }
     );
     if (updateData) {
-      res
+      return res
         .status(200)
         .send({ code: 200, message: "User password Updated", updateData });
-    } else {
-      res.status(400).send({ code: 400, message: "Error Can not update" });
     }
+    return res.status(400).send({ code: 400, message: "Error Can not update" });
   } catch (error) {
     res.status(500).send({ code: 500, message: "Internal server error" });
   }
@@ -92,7 +94,6 @@ const updatePassword = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const id = req.params.id;
-    console.log(id);
     const {
       firstname,
       lastname,
@@ -103,7 +104,6 @@ const updateUser = async (req, res) => {
       phoneNo,
       address,
     } = req.body;
-    console.log(address);
 
     const obj = {};
     if (firstname) {
@@ -140,9 +140,13 @@ const updateUser = async (req, res) => {
       }
     );
     if (updateData) {
-      res.status(200).send({ code: 200, message: "User Updated", updateData });
+      return res
+        .status(200)
+        .send({ code: 200, message: "User Updated", updateData });
     } else {
-      res.status(400).send({ code: 400, message: "Error Can not update" });
+      return res
+        .status(400)
+        .send({ code: 400, message: "Error Can not update" });
     }
   } catch (error) {
     res.status(500).send({ code: 500, message: "Internal server error" });
@@ -153,12 +157,6 @@ const updateEmail = async (req, res) => {
   try {
     const id = req.params.id;
     const email = req.body.emailId;
-    // const obj = {};
-
-    if (!email) {
-      // Object.assign(obj, { email });
-      res.status(400).send({ code: 400, message: "Email is empty" });
-    }
 
     await userSchema.users.updateOne(
       {
@@ -168,23 +166,16 @@ const updateEmail = async (req, res) => {
         $set: { emailId: email },
       }
     );
+    return res.status(200).send({ code: 200, message: "email Updated" });
   } catch (error) {
     res.status(500).send({ code: 500, message: "Internal server error" });
   }
-
-  res.status(200).send({ code: 200, message: "email Updated" });
 };
 
 const updatephone = async (req, res) => {
   try {
     const id = req.params.id;
     const phone = req.body.phoneNo;
-    // const obj = {};
-
-    if (!phone) {
-      // Object.assign(obj, { email });
-      res.status(400).send({ code: 400, message: "phone is empty" });
-    }
 
     await userSchema.users.updateOne(
       {
@@ -194,11 +185,10 @@ const updatephone = async (req, res) => {
         $set: { phoneNo: phone },
       }
     );
+    return res.status(200).send({ code: 200, message: "phone Updated" });
   } catch (error) {
     res.status(500).send({ code: 500, message: "Internal server error" });
   }
-
-  res.status(200).send({ code: 200, message: "phone Updated" });
 };
 
 const updateAddress = async (req, res) => {
@@ -232,20 +222,19 @@ const updateAddress = async (req, res) => {
         $set: obj,
       }
     );
+    return res.status(200).send({ code: 200, message: "Address Updated" });
   } catch (error) {
     res.status(500).send({ code: 500, message: "Internal server error" });
   }
-
-  res.status(200).send({ code: 200, message: "Address Updated" });
 };
 
 const getbyphoneno = async (req, res) => {
-  const phone = req.body.phoneNo;
+  const phoneNo = req.body.phoneNo;
 
-  const userData = await userSchema.users.find({ phoneNo: phone });
+  const userData = await userSchema.users.find({ phoneNo });
 
   if (userData) {
-    res
+    return res
       .status(200)
       .send({ code: 200, message: "User Details Feteched", data: userData });
   } else {
@@ -257,14 +246,12 @@ const getbyname = async (req, res) => {
   const fname = req.body.firstname;
   const lname = req.body.lastname;
 
-  console.log(fname + lname);
   const userData = await userSchema.users.find({
     firstname: fname,
     lastname: lname,
   });
-  //console.log(userData);
   if (userData) {
-    res
+    return res
       .status(200)
       .send({ code: 200, message: "User Details Feteched", data: userData });
   } else {
@@ -278,7 +265,7 @@ const getbyusername = async (req, res) => {
   const userData = await userSchema.users.find({ username: uname });
 
   if (userData) {
-    res
+    return res
       .status(200)
       .send({ code: 200, message: "User Feteched", data: userData });
   } else {
