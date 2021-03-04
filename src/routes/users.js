@@ -14,24 +14,35 @@ const {
 } = require("../controllers/users");
 const auth = require("../middelware/auth");
 
-router.post("/user/register", registerUser);
+const {
+  isUserRegisterDataValid ,
+  isUsernameExist,
+  isPasswordValid,
+  isEmailValid,
+  isPhonenoValid,
+  isNameValid,
+  isUsernameValid,
+  isAddressValid,
+  } = require('../validators/users/')
 
-router.post("/user/validateUser", validateUser);
+router.post("/user/register",[isUserRegisterDataValid,isUsernameExist], registerUser);
 
-router.put("/user/updatePassword/:id", auth, updatePassword);
+router.post("/user/validateUser",[isPasswordValid,isUsernameValid],validateUser);
 
-router.put("/user/updateUser/:id", updateUser);
+router.put("/user/updatePassword/:id", auth,[isPasswordValid], updatePassword);
 
-router.put("/user/updateEmail/:id", updateEmail);
+router.put("/user/updateUser/:id",[isUserRegisterDataValid], updateUser);
 
-router.put("/user/updatePhone/:id", updatephone);
+router.put("/user/updateEmail/:id",auth,[isEmailValid], updateEmail);
 
-router.put("/user/updateAddress/:id", updateAddress);
+router.put("/user/updatePhone/:id",auth,[isPhonenoValid], updatephone);
 
-router.get("/user/getuserbyname", getbyname);
+router.put("/user/updateAddress/:id",auth,[isAddressValid], updateAddress);
 
-router.get("/user/getuserbyusername", getbyusername);
+router.get("/user/getuserbyname",[isNameValid], getbyname);
 
-router.get("/user/getuserbyphoneno", getbyphoneno);
+router.get("/user/getuserbyusername",auth,[isUsernameValid],  getbyusername);
+
+router.get("/user/getuserbyphoneno",auth,[isPhonenoValid], getbyphoneno);
 
 module.exports = router;
