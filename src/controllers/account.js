@@ -71,10 +71,10 @@ const transferAmount = async (req, res) => {
       remark: req.body.remark,
     };
 
-    const fromData = await accountSchema.accounts.find({
+    const fromData = await accountSchema.accounts.findOne({
       accountNo: transferInfo.from.accountNo,
     });
-    const toData = await accountSchema.accounts.find({
+    const toData = await accountSchema.accounts.findOne({
       accountNo: transferInfo.to.accountNo,
     });
 
@@ -83,14 +83,13 @@ const transferAmount = async (req, res) => {
         .status(400)
         .send({ code: 400, message: "Account Number Not found" });
     }
-
     if (!toData) {
       return res
         .status(400)
         .send({ code: 400, message: "Account Number Not found" });
     }
 
-    if (fromData[0].closingBalance < transferInfo.from.amount) {
+    if (Number(fromData.closingBalance) < Number(transferInfo.from.amount)) {
       return res.status(400).send({
         code: 400,
         message: "Account balance is lessthan transfe amount",
@@ -98,11 +97,11 @@ const transferAmount = async (req, res) => {
     }
 
     const newFromClosingAmount =
-      parseFloat(fromData[0].closingBalance) -
+      parseFloat(fromData.closingBalance) -
       parseFloat(transferInfo.from.amount);
 
     const newtoClosingAmount =
-      parseFloat(toData[0].closingBalance) + parseFloat(transferInfo.to.amount);
+      parseFloat(toData.closingBalance) + parseFloat(transferInfo.to.amount);
 
     Promise.all([
       await accountSchema.accounts.updateOne(
@@ -127,28 +126,31 @@ const transferAmount = async (req, res) => {
         to: transferInfo.to.accountNo,
         from: transferInfo.from.accountNo,
         remark: "SUCCESS",
-        userId: id,
+        userId,
       }),
     ]);
 
-    Promise.all([
-      await sendEmailNotification({
-        from: "emal",
-        to: "email",
-        text: `Avaibale balance id: ${newFromClosingAmount}`,
-      }),
-      await sendEmailNotification({
-        from: "emal",
-        to: "email",
-        text: `Account Credited amount: ${newtoClosingAmount}`,
-      }),
-    ]);
+    // Promise.all([
+    //   await sendEmailNotification({
+    //     from: "emal",
+    //     to: "email",
+    //     text: `Avaibale balance id: ${newFromClosingAmount}`,
+    //   }),
+    //   await sendEmailNotification({
+    //     from: "emal",
+    //     to: "email",
+    //     text: `Account Credited amount: ${newtoClosingAmount}`,
+    //   }),
+    // ]);
 
     return res
       .status(200)
       .send({ code: 200, message: "Amount transfered sucessfully" });
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    console.log(error);
+    res
+      .status(500)
+      .send({ code: 500, message: "Internal server error", error });
   }
 };
 
