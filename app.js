@@ -24,4 +24,4 @@ app.use("/healthCheck", (req, res) => {
 
 app.use("/bankingapp/api", routes);
 
-app.listen(3000, () => console.log("Server Listing On Port Number 3000"));
+app.listen(8081, () => console.log("Server Listing On Port Number 8081"));

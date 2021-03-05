@@ -89,11 +89,10 @@ const transferAmount = async (req, res) => {
         .status(400)
         .send({ code: 400, message: "Account Number Not found" });
     }
-
-    if (fromData[0].closingBalance < transferInfo.from.amount) {
+    if (Number(fromData[0].closingBalance) < Number(transferInfo.from.amount)) {
       return res.status(400).send({
         code: 400,
-        message: "Account balance is lessthan transfe amount",
+        message: "Account balance is less than transfer amount",
       });
     }
 
@@ -102,8 +101,10 @@ const transferAmount = async (req, res) => {
       parseFloat(transferInfo.from.amount);
 
     const newtoClosingAmount =
-      parseFloat(toData[0].closingBalance) + parseFloat(transferInfo.to.amount);
+      parseFloat(toData[0].closingBalance) +
+      parseFloat(transferInfo.to.amount);
 
+    
     Promise.all([
       await accountSchema.accounts.updateOne(
         {
@@ -127,19 +128,19 @@ const transferAmount = async (req, res) => {
         to: transferInfo.to.accountNo,
         from: transferInfo.from.accountNo,
         remark: "SUCCESS",
-        userId: id,
+        userId,
       }),
     ]);
-
+   
     Promise.all([
       await sendEmailNotification({
-        from: "emal",
-        to: "email",
+        from: "satputenilesh0298@gmail.com",
+        to: "satputenilesh1998@gmail.com",
         text: `Avaibale balance id: ${newFromClosingAmount}`,
       }),
       await sendEmailNotification({
-        from: "emal",
-        to: "email",
+        from: "satputenilesh0298@gmail.com",
+        to: "satputenilesh1998@gmail.com",
         text: `Account Credited amount: ${newtoClosingAmount}`,
       }),
     ]);
@@ -148,7 +149,7 @@ const transferAmount = async (req, res) => {
       .status(200)
       .send({ code: 200, message: "Amount transfered sucessfully" });
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: "Internal server error",error });
   }
 };
 

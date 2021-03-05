@@ -23,7 +23,7 @@ const {
   isNameValid,
   isUsernameValid,
   isAddressValid,
-  } = require('../validators/users/')
+  } = require('../validators/users/');
 
 router.post("/user/register",[isUserRegisterDataValid,isUsernameExist], registerUser);
 
