@@ -2,7 +2,7 @@ const Joi = require("joi");
 //const userSchema = require("../mongoDB/models/users");
 const userSchema = require("../../mongoDB/models/users");
 
-const isUserRegisterDataValid = (req, res, next) => {
+const isUsetrRegisterDataValid = (req, res, next) => {
   const validateData = Joi.object({
     firstname: Joi.string().min(3).max(30).required(),
     lastname: Joi.string().min(3).max(30).required(),
@@ -31,7 +31,7 @@ const isUserRegisterDataValid = (req, res, next) => {
       error: error.error.details[0],
     });
   }
-  next();
+  nex();
 };
 
 const isUsernameExist = async (req, res, next) => {
@@ -158,13 +158,13 @@ const isUsernameValid = async (req, res, next) => {
   next();
 };
 
-module.exports = { 
-    isUserRegisterDataValid,
-    isUsernameExist,
-    isPasswordValid,
-    isEmailValid,
-    isPhonenoValid,
-    isAddressValid,
-    isNameValid,
-    isUsernameValid
- };
+module.exports = {
+  isUsetrRegisterDataValid,
+  isUsernameExist,
+  isPasswordValid,
+  isEmailValid,
+  isPhonenoValid,
+  isAddressValid,
+  isNameValid,
+  isUsernameValid,
+};
