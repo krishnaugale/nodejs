@@ -158,13 +158,13 @@ const isUsernameValid = async (req, res, next) => {
   next();
 };
 
-module.exports = {
-  isUserRegisterDataValid,
-  isUsernameExist,
-  isPasswordValid,
-  isEmailValid,
-  isPhonenoValid,
-  isAddressValid,
-  isNameValid,
-  isUsernameValid,
-};
+module.exports = { 
+    isUserRegisterDataValid,
+    isUsernameExist,
+    isPasswordValid,
+    isEmailValid,
+    isPhonenoValid,
+    isAddressValid,
+    isNameValid,
+    isUsernameValid
+ };
