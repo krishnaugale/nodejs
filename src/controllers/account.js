@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const accountSchema = require("../mongoDB/models/account");
 const transactionsSchema = require("../mongoDB/models/transaction");
-const {send ,trasfer}
+const sendEmailNotification = require("../services/emailNotification");
 
 const createNewAccoount = async (req, res) => {
   try {
@@ -128,6 +128,19 @@ const transferAmount = async (req, res) => {
         from: transferInfo.from.accountNo,
         remark: "SUCCESS",
         userId: id,
+      }),
+    ]);
+
+    Promise.all([
+      await sendEmailNotification({
+        from: "emal",
+        to: "email",
+        text: `Avaibale balance id: ${newFromClosingAmount}`,
+      }),
+      await sendEmailNotification({
+        from: "emal",
+        to: "email",
+        text: `Account Credited amount: ${newtoClosingAmount}`,
       }),
     ]);
 
