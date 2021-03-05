@@ -4,6 +4,8 @@ const app = express();
 const routes = require("./src/routes/");
 const bodyParser = require("body-parser");
 const dbConnect = require("./src/mongoDB/connection");
+const logger = require("./src/utils/winston");
+
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -24,4 +26,4 @@ app.use("/healthCheck", (req, res) => {
 
 app.use("/bankingapp/api", routes);
 
-app.listen(3000, () => console.log("Server Listing On Port Number 3000"));
+app.listen(3000, () => console.log('info',"Server Listing On Port Number 3000"));

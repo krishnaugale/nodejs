@@ -13,9 +13,15 @@ const {
     lastActivated ,
     updateLastActivated
     } = require("../controllers/account");
-const auth = require("../middelware/auth");
+    
+       const {
+              iscreateNewAccoount ,
+            } = require('../validators/account/')
+      
+    
+        const auth = require("../middelware/auth");
 
-router.post("/account/createNewAccount", auth, createNewAccoount);
+router.post("/account/createNewAccount", auth, [iscreateNewAccoount], createNewAccoount);
 
 router.get("/account/getByAccountNumber", auth, getByAccountNumber);
 
