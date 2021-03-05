@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const userSchema = require("../mongoDB/models/users");
 const jwtSign = require("../utils/jwtSign");
+//const validSchema = require('../validators/users')
 
 const registerUser = async (req, res) => {
   try {
@@ -20,7 +21,11 @@ const registerUser = async (req, res) => {
         pin: req.body.address.pin,
       },
     };
-
+    const result = await validSchema.validateAsync(userInfo);
+    
+    //if(!result) {
+    //  res.status(400).send({code : 400, message : "Invalid Schema"})
+    //}
     const userData = await userSchema.users.create(userInfo);
     const tokenData = {
       id: userData._id,
@@ -100,7 +105,6 @@ const updateUser = async (req, res) => {
       emailId,
       username,
       dateOfBirth,
-      password,
       phoneNo,
       address,
     } = req.body;
@@ -120,9 +124,6 @@ const updateUser = async (req, res) => {
     }
     if (dateOfBirth) {
       Object.assign(obj, { dateOfBirth });
-    }
-    if (password) {
-      Object.assign(obj, { password });
     }
     if (phoneNo) {
       Object.assign(obj, { phoneNo });
@@ -219,7 +220,7 @@ const updateAddress = async (req, res) => {
         _id: mongoose.Types.ObjectId(id),
       },
       {
-        $set: obj,
+        $set:{address:obj},
       }
     );
     return res.status(200).send({ code: 200, message: "Address Updated" });
@@ -237,9 +238,10 @@ const getbyphoneno = async (req, res) => {
     return res
       .status(200)
       .send({ code: 200, message: "User Details Feteched", data: userData });
-  } else {
-    res.status(400).send({ code: 400, message: "Error Can not fetch" });
-  }
+    } else {
+      res.status(400).send({ code: 400, message: "Error Can not fetch" });
+    }
+
 };
 
 const getbyname = async (req, res) => {
@@ -257,20 +259,26 @@ const getbyname = async (req, res) => {
   } else {
     res.status(400).send({ code: 400, message: "Error Can not fetch" });
   }
+
 };
 
 const getbyusername = async (req, res) => {
-  const uname = req.body.username;
+  try {
+    const uname = req.body.username;
 
-  const userData = await userSchema.users.find({ username: uname });
+    const userData = await userSchema.users.find({ username: uname });
 
   if (userData) {
     return res
       .status(200)
       .send({ code: 200, message: "User Feteched", data: userData });
-  } else {
+    } else {
     res.status(400).send({ code: 400, message: "Error Can not fetch" });
-  }
+    }
+   }catch(error) {
+    res.status(500).send({ code: 500, message: "Internal server error" });
+   }
+  
 };
 
 module.exports = {
