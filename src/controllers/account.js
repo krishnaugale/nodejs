@@ -2,9 +2,11 @@ const mongoose = require("mongoose");
 const accountSchema = require("../mongoDB/models/account");
 const transactionsSchema = require("../mongoDB/models/transaction");
 const sendEmailNotification = require("../services/emailNotification");
+const logger = require("../utils/winston");
 
 const createNewAccoount = async (req, res) => {
   try {
+    throw Error('error')
     const { username, closingBalance } = req.body;
     const accountNumber = Date.now();
 
@@ -19,6 +21,7 @@ const createNewAccoount = async (req, res) => {
       .status(200)
       .send({ code: 200, message: "Account Created Successfully", accontData });
   } catch (err) {
+    logger.log(err);
     res.status(500).send({ code: 500, message: "Internal server error" });
   }
 };

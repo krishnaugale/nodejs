@@ -39,7 +39,7 @@ const iscreateNewAccoount = (req, res, next) => {
   next();
 };
 
-module.export=
+module.exports =
 {
     iscreateNewAccoount,
 }

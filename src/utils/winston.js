@@ -7,7 +7,7 @@ const logFormat = winston.format.combine(
   winston.format.colorize(),
   winston.format.timestamp(),
   winston.format.align(),
-  winston.format.prizzntf(
+  winston.format.printf(
     (info) => `${info.timestamp} ${info.level}: ${info.message}`
   )
 );
@@ -40,7 +40,7 @@ const logger = createLogger({
       maxSize: "20m",
       maxFiles: "14d",
       level: "fl",
-      format: combine(timestamp({ format: "DD-MM-YYYY" }), logFormat),
+      format: logFormat
     }),
   ],
 });
