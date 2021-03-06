@@ -17,6 +17,8 @@ const logFormat = winston.format.combine(
 //   for (const name of Object.keys(message)) {
 //     // console.log(`${name} : ${message[name]} `);
 //     t += message[name] + '|~|'
+//     t += message[name] + '|~|'
+
 //   }
 //   return `|**|${t}`
 // })

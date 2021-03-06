@@ -144,6 +144,8 @@ const transferAmount = async (req, res) => {
     //     to: "email",
     //     text: `Account Credited amount: ${newtoClosingAmount}`,
     //   }),
+
+  console.log("welcome to ")
     // ]);
 
     return res

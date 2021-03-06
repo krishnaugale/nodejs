@@ -17,6 +17,7 @@ const iscreateNewAccoount = (req, res, next) => {
     //   city: Joi.string().min(3).max(30),
     //   country: Joi.string().min(3).max(30),
     //   pin: Joi.string().max(6),
+    // console.log("welcome")
     // }),
     // dateOfBirth: Joi.string(),
     // emailId: Joi.string().email({
