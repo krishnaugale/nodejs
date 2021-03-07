@@ -6,7 +6,7 @@ const logger = require("../utils/winston");
 
 const createNewAccoount = async (req, res) => {
   try {
-    throw Error('error')
+    throw Error("error");
     const { username, closingBalance } = req.body;
     const accountNumber = Date.now();
 
@@ -95,7 +95,7 @@ const transferAmount = async (req, res) => {
     if (Number(fromData.closingBalance) < Number(transferInfo.from.amount)) {
       return res.status(400).send({
         code: 400,
-        message: "Account balance is lessthan transfe amount",
+        message: "Account balance is less than transfer amount",
       });
     }
 
@@ -104,7 +104,7 @@ const transferAmount = async (req, res) => {
       parseFloat(transferInfo.from.amount);
 
     const newtoClosingAmount =
-      parseFloat(toData.closingBalance) + parseFloat(transferInfo.to.amount);
+      parseFloat(toData[0].closingBalance) + parseFloat(transferInfo.to.amount);
 
     Promise.all([
       await accountSchema.accounts.updateOne(
@@ -133,26 +133,23 @@ const transferAmount = async (req, res) => {
       }),
     ]);
 
-    // Promise.all([
-    //   await sendEmailNotification({
-    //     from: "emal",
-    //     to: "email",
-    //     text: `Avaibale balance id: ${newFromClosingAmount}`,
-    //   }),
-    //   await sendEmailNotification({
-    //     from: "emal",
-    //     to: "email",
-    //     text: `Account Credited amount: ${newtoClosingAmount}`,
-    //   }),
-
-  console.log("welcome to ")
-    // ]);
+    Promise.all([
+      await sendEmailNotification({
+        from: "satputenilesh0298@gmail.com",
+        to: "satputenilesh1998@gmail.com",
+        text: `Avaibale balance id: ${newFromClosingAmount}`,
+      }),
+      await sendEmailNotification({
+        from: "satputenilesh0298@gmail.com",
+        to: "satputenilesh1998@gmail.com",
+        text: `Account Credited amount: ${newtoClosingAmount}`,
+      }),
+    ]);
 
     return res
       .status(200)
       .send({ code: 200, message: "Amount transfered sucessfully" });
   } catch (error) {
-    console.log(error);
     res
       .status(500)
       .send({ code: 500, message: "Internal server error", error });

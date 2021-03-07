@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const userSchema = require("../mongoDB/models/users");
 const jwtSign = require("../utils/jwtSign");
+const { encrypt, decrypt } = require("../utils/pswEncDec");
 
 const registerUser = async (req, res) => {
   try {
@@ -10,7 +11,7 @@ const registerUser = async (req, res) => {
       emailId: req.body.emailId,
       dateOfBirth: req.body.dateOfBirth,
       username: req.body.username,
-      password: req.body.password,
+      password: encrypt(req.body.password).encryptedData,
       phoneNo: req.body.phoneNo,
       address: {
         firstline: req.body.address.firstline,
@@ -20,11 +21,6 @@ const registerUser = async (req, res) => {
         pin: req.body.address.pin,
       },
     };
-    const result = await validSchema.validateAsync(userInfo);
-
-    //if(!result) {
-    //  res.status(400).send({code : 400, message : "Invalid Schema"})
-    //}
     const userData = await userSchema.users.create(userInfo);
     const tokenData = {
       id: userData._id,
@@ -37,6 +33,7 @@ const registerUser = async (req, res) => {
       .status(200)
       .send({ code: 200, message: "Data Saved sucessfully", token, userData });
   } catch (error) {
+    console.log(error);
     return res
       .status(500)
       .send({ code: 500, message: "Internal server error" });
@@ -47,7 +44,7 @@ const validateUser = async (req, res) => {
   try {
     const userInfo = {
       username: req.body.username,
-      password: req.body.password,
+      password: encrypt(req.body.password).encryptedData,
     };
 
     const userData = await userSchema.users.findOne(userInfo);
@@ -57,7 +54,7 @@ const validateUser = async (req, res) => {
         .status(200)
         .send({ code: 400, message: "User already exists", userData });
     }
-    return res.status(400).send({ code: 200, message: "USer not exists" });
+    return res.status(400).send({ code: 200, message: "User not exists" });
   } catch (error) {
     res
       .status(500)
@@ -68,7 +65,9 @@ const validateUser = async (req, res) => {
 const updatePassword = async (req, res) => {
   try {
     const id = req.params.id;
-    const password = req.body.password;
+    const password = encrypt(req.body.password).encryptedData;
+
+    //console.log(decrypt(encrypt(req.body.password)));
 
     const obj = {};
 
@@ -91,6 +90,7 @@ const updatePassword = async (req, res) => {
     }
     return res.status(400).send({ code: 400, message: "Error Can not update" });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ code: 500, message: "Internal server error" });
   }
 };
