@@ -2,9 +2,11 @@ const mongoose = require("mongoose");
 const accountSchema = require("../mongoDB/models/account");
 const transactionsSchema = require("../mongoDB/models/transaction");
 const sendEmailNotification = require("../services/emailNotification");
+const logger = require("../utils/winston");
 
 const createNewAccoount = async (req, res) => {
   try {
+    throw Error("error");
     const { username, closingBalance } = req.body;
     const accountNumber = Date.now();
 
@@ -19,6 +21,7 @@ const createNewAccoount = async (req, res) => {
       .status(200)
       .send({ code: 200, message: "Account Created Successfully", accontData });
   } catch (err) {
+    logger.log(err);
     res.status(500).send({ code: 500, message: "Internal server error" });
   }
 };
@@ -71,10 +74,10 @@ const transferAmount = async (req, res) => {
       remark: req.body.remark,
     };
 
-    const fromData = await accountSchema.accounts.find({
+    const fromData = await accountSchema.accounts.findOne({
       accountNo: transferInfo.from.accountNo,
     });
-    const toData = await accountSchema.accounts.find({
+    const toData = await accountSchema.accounts.findOne({
       accountNo: transferInfo.to.accountNo,
     });
 
@@ -83,13 +86,13 @@ const transferAmount = async (req, res) => {
         .status(400)
         .send({ code: 400, message: "Account Number Not found" });
     }
-
     if (!toData) {
       return res
         .status(400)
         .send({ code: 400, message: "Account Number Not found" });
     }
-    if (Number(fromData[0].closingBalance) < Number(transferInfo.from.amount)) {
+
+    if (Number(fromData.closingBalance) < Number(transferInfo.from.amount)) {
       return res.status(400).send({
         code: 400,
         message: "Account balance is less than transfer amount",
@@ -97,14 +100,12 @@ const transferAmount = async (req, res) => {
     }
 
     const newFromClosingAmount =
-      parseFloat(fromData[0].closingBalance) -
+      parseFloat(fromData.closingBalance) -
       parseFloat(transferInfo.from.amount);
 
     const newtoClosingAmount =
-      parseFloat(toData[0].closingBalance) +
-      parseFloat(transferInfo.to.amount);
+      parseFloat(toData[0].closingBalance) + parseFloat(transferInfo.to.amount);
 
-    
     Promise.all([
       await accountSchema.accounts.updateOne(
         {
@@ -131,7 +132,7 @@ const transferAmount = async (req, res) => {
         userId,
       }),
     ]);
-   
+
     Promise.all([
       await sendEmailNotification({
         from: "satputenilesh0298@gmail.com",
@@ -149,7 +150,9 @@ const transferAmount = async (req, res) => {
       .status(200)
       .send({ code: 200, message: "Amount transfered sucessfully" });
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error",error });
+    res
+      .status(500)
+      .send({ code: 500, message: "Internal server error", error });
   }
 };
 

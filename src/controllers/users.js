@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const userSchema = require("../mongoDB/models/users");
 const jwtSign = require("../utils/jwtSign");
-const {encrypt, decrypt} = require("../utils/pswEncDec");
+const { encrypt, decrypt } = require("../utils/pswEncDec");
 
 const registerUser = async (req, res) => {
   try {
@@ -21,7 +21,6 @@ const registerUser = async (req, res) => {
         pin: req.body.address.pin,
       },
     };
-
     const userData = await userSchema.users.create(userInfo);
     const tokenData = {
       id: userData._id,
@@ -67,9 +66,9 @@ const updatePassword = async (req, res) => {
   try {
     const id = req.params.id;
     const password = encrypt(req.body.password).encryptedData;
-    
+
     //console.log(decrypt(encrypt(req.body.password)));
-    
+
     const obj = {};
 
     if (password) {
@@ -220,7 +219,7 @@ const updateAddress = async (req, res) => {
         _id: mongoose.Types.ObjectId(id),
       },
       {
-        $set:{address:obj},
+        $set: { address: obj },
       }
     );
     return res.status(200).send({ code: 200, message: "Address Updated" });
@@ -238,10 +237,9 @@ const getbyphoneno = async (req, res) => {
     return res
       .status(200)
       .send({ code: 200, message: "User Details Feteched", data: userData });
-    } else {
-      res.status(400).send({ code: 400, message: "Error Can not fetch" });
-    }
-
+  } else {
+    res.status(400).send({ code: 400, message: "Error Can not fetch" });
+  }
 };
 
 const getbyname = async (req, res) => {
@@ -259,7 +257,6 @@ const getbyname = async (req, res) => {
   } else {
     res.status(400).send({ code: 400, message: "Error Can not fetch" });
   }
-
 };
 
 const getbyusername = async (req, res) => {
@@ -268,17 +265,16 @@ const getbyusername = async (req, res) => {
 
     const userData = await userSchema.users.find({ username: uname });
 
-  if (userData) {
-    return res
-      .status(200)
-      .send({ code: 200, message: "User Feteched", data: userData });
+    if (userData) {
+      return res
+        .status(200)
+        .send({ code: 200, message: "User Feteched", data: userData });
     } else {
-    res.status(400).send({ code: 400, message: "Error Can not fetch" });
+      res.status(400).send({ code: 400, message: "Error Can not fetch" });
     }
-   }catch(error) {
+  } catch (error) {
     res.status(500).send({ code: 500, message: "Internal server error" });
-   }
-  
+  }
 };
 
 module.exports = {
