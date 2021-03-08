@@ -1,46 +1,49 @@
-const express = require("express");
-const router = express.Router();
-const { 
-    createNewAccoount , 
-    getByAccountNumber ,
-    getByUserName ,
-    transferAmount ,
-    addPayees ,
-    getPayees ,
-    deletePayees ,
-    closeAccount ,
-    openClosedAccount , 
-    lastActivated ,
-    updateLastActivated
-    } = require("../controllers/account");
-    
-       const {
-              iscreateNewAccoount ,
-            } = require('../validators/account/')
-      
-    
-        const auth = require("../middelware/auth");
+const express = require('express')
 
-router.post("/account/createNewAccount", auth, [iscreateNewAccoount], createNewAccoount);
+const router = express.Router()
+const {
+  createNewAccoount,
+  getByAccountNumber,
+  getByUserName,
+  transferAmount,
+  addPayees,
+  getPayees,
+  deletePayees,
+  closeAccount,
+  openClosedAccount,
+  lastActivated,
+  updateLastActivated,
+} = require('../controllers/account')
 
-router.get("/account/getByAccountNumber", auth, getByAccountNumber);
+const { iscreateNewAccoount } = require('../validators/account')
 
-router.get("/account/getByUserName", auth, getByUserName);
+const auth = require('../middelware/auth')
 
-router.post("/account/transferAmount", auth, transferAmount);
+router.post(
+  '/account/createNewAccount',
+  auth,
+  [iscreateNewAccoount],
+  createNewAccoount,
+)
 
-router.post("/account/addPayees/:accountNo", auth, addPayees);
+router.get('/account/getByAccountNumber', auth, getByAccountNumber)
 
-router.get("/account/getPayees", auth, getPayees);
+router.get('/account/getByUserName', auth, getByUserName)
 
-router.post("/account/deletePayees", auth, deletePayees);
+router.post('/account/transferAmount', auth, transferAmount)
 
-router.post("/account/closeAccount", auth, closeAccount);
+router.post('/account/addPayees/:accountNo', auth, addPayees)
 
-router.post("/account/openClosedAccount", auth, openClosedAccount);
+router.get('/account/getPayees', auth, getPayees)
 
-router.get("/account/lastActivated", auth, lastActivated);
+router.post('/account/deletePayees', auth, deletePayees)
 
-router.post("/account/updateLastActivated", auth, updateLastActivated);
+router.post('/account/closeAccount', auth, closeAccount)
 
-module.exports = router;
+router.post('/account/openClosedAccount', auth, openClosedAccount)
+
+router.get('/account/lastActivated', auth, lastActivated)
+
+router.post('/account/updateLastActivated', auth, updateLastActivated)
+
+module.exports = router
