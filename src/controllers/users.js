@@ -1,7 +1,7 @@
-const mongoose = require("mongoose");
-const userSchema = require("../mongoDB/models/users");
-const jwtSign = require("../utils/jwtSign");
-const { encrypt, decrypt } = require("../utils/pswEncDec");
+const mongoose = require('mongoose')
+const userSchema = require('../mongoDB/models/users')
+const jwtSign = require('../utils/jwtSign')
+const { encrypt, decrypt } = require('../utils/pswEncDec')
 
 const registerUser = async (req, res) => {
   try {
@@ -20,59 +20,55 @@ const registerUser = async (req, res) => {
         country: req.body.address.country,
         pin: req.body.address.pin,
       },
-    };
-    const userData = await userSchema.users.create(userInfo);
+    }
+    const userData = await userSchema.users.create(userInfo)
     const tokenData = {
       id: userData._id,
       username: userData.username,
       emailId: userData.emailId,
-    };
+    }
 
-    const token = jwtSign(tokenData, "easybanking");
+    const token = jwtSign(tokenData, 'easybanking')
     res
       .status(200)
-      .send({ code: 200, message: "Data Saved sucessfully", token, userData });
+      .send({ code: 200, message: 'Data Saved sucessfully', token, userData })
   } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .send({ code: 500, message: "Internal server error" });
+    console.log(error)
+    return res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 const validateUser = async (req, res) => {
   try {
     const userInfo = {
       username: req.body.username,
       password: encrypt(req.body.password).encryptedData,
-    };
+    }
 
-    const userData = await userSchema.users.findOne(userInfo);
+    const userData = await userSchema.users.findOne(userInfo)
 
     if (userData) {
       return res
         .status(200)
-        .send({ code: 400, message: "User already exists", userData });
+        .send({ code: 400, message: 'User already exists', userData })
     }
-    return res.status(400).send({ code: 200, message: "User not exists" });
+    return res.status(400).send({ code: 200, message: 'User not exists' })
   } catch (error) {
-    res
-      .status(500)
-      .send({ code: 500, message: "Internal server error", error });
+    res.status(500).send({ code: 500, message: 'Internal server error', error })
   }
-};
+}
 
 const updatePassword = async (req, res) => {
   try {
-    const id = req.params.id;
-    const password = encrypt(req.body.password).encryptedData;
+    const { id } = req.params
+    const password = encrypt(req.body.password).encryptedData
 
-    //console.log(decrypt(encrypt(req.body.password)));
+    // console.log(decrypt(encrypt(req.body.password)));
 
-    const obj = {};
+    const obj = {}
 
     if (password) {
-      Object.assign(obj, { password });
+      Object.assign(obj, { password })
     }
 
     const updateData = await userSchema.users.updateOne(
@@ -81,23 +77,23 @@ const updatePassword = async (req, res) => {
       },
       {
         $set: obj,
-      }
-    );
+      },
+    )
     if (updateData) {
       return res
         .status(200)
-        .send({ code: 200, message: "User password Updated", updateData });
+        .send({ code: 200, message: 'User password Updated', updateData })
     }
-    return res.status(400).send({ code: 400, message: "Error Can not update" });
+    return res.status(400).send({ code: 400, message: 'Error Can not update' })
   } catch (error) {
-    console.log(error);
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    console.log(error)
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 const updateUser = async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params
     const {
       firstname,
       lastname,
@@ -106,29 +102,29 @@ const updateUser = async (req, res) => {
       dateOfBirth,
       phoneNo,
       address,
-    } = req.body;
+    } = req.body
 
-    const obj = {};
+    const obj = {}
     if (firstname) {
-      Object.assign(obj, { firstname });
+      Object.assign(obj, { firstname })
     }
     if (lastname) {
-      Object.assign(obj, { lastname });
+      Object.assign(obj, { lastname })
     }
     if (emailId) {
-      Object.assign(obj, { emailId });
+      Object.assign(obj, { emailId })
     }
     if (username) {
-      Object.assign(obj, { username });
+      Object.assign(obj, { username })
     }
     if (dateOfBirth) {
-      Object.assign(obj, { dateOfBirth });
+      Object.assign(obj, { dateOfBirth })
     }
     if (phoneNo) {
-      Object.assign(obj, { phoneNo });
+      Object.assign(obj, { phoneNo })
     }
     if (address) {
-      Object.assign(obj, { address });
+      Object.assign(obj, { address })
     }
 
     const updateData = await userSchema.users.updateOne(
@@ -137,26 +133,23 @@ const updateUser = async (req, res) => {
       },
       {
         $set: obj,
-      }
-    );
+      },
+    )
     if (updateData) {
       return res
         .status(200)
-        .send({ code: 200, message: "User Updated", updateData });
-    } else {
-      return res
-        .status(400)
-        .send({ code: 400, message: "Error Can not update" });
+        .send({ code: 200, message: 'User Updated', updateData })
     }
+    return res.status(400).send({ code: 400, message: 'Error Can not update' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 const updateEmail = async (req, res) => {
   try {
-    const id = req.params.id;
-    const email = req.body.emailId;
+    const { id } = req.params
+    const email = req.body.emailId
 
     await userSchema.users.updateOne(
       {
@@ -164,18 +157,18 @@ const updateEmail = async (req, res) => {
       },
       {
         $set: { emailId: email },
-      }
-    );
-    return res.status(200).send({ code: 200, message: "email Updated" });
+      },
+    )
+    return res.status(200).send({ code: 200, message: 'email Updated' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 const updatephone = async (req, res) => {
   try {
-    const id = req.params.id;
-    const phone = req.body.phoneNo;
+    const { id } = req.params
+    const phone = req.body.phoneNo
 
     await userSchema.users.updateOne(
       {
@@ -183,35 +176,35 @@ const updatephone = async (req, res) => {
       },
       {
         $set: { phoneNo: phone },
-      }
-    );
-    return res.status(200).send({ code: 200, message: "phone Updated" });
+      },
+    )
+    return res.status(200).send({ code: 200, message: 'phone Updated' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 const updateAddress = async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params
 
-    const { firstline, secondline, city, country, pin } = req.body;
-    const obj = {};
+    const { firstline, secondline, city, country, pin } = req.body
+    const obj = {}
 
     if (firstline) {
-      Object.assign(obj, { firstline });
+      Object.assign(obj, { firstline })
     }
     if (secondline) {
-      Object.assign(obj, { secondline });
+      Object.assign(obj, { secondline })
     }
     if (city) {
-      Object.assign(obj, { city });
+      Object.assign(obj, { city })
     }
     if (country) {
-      Object.assign(obj, { country });
+      Object.assign(obj, { country })
     }
     if (pin) {
-      Object.assign(obj, { pin });
+      Object.assign(obj, { pin })
     }
 
     await userSchema.users.updateOne(
@@ -220,62 +213,59 @@ const updateAddress = async (req, res) => {
       },
       {
         $set: { address: obj },
-      }
-    );
-    return res.status(200).send({ code: 200, message: "Address Updated" });
+      },
+    )
+    return res.status(200).send({ code: 200, message: 'Address Updated' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 const getbyphoneno = async (req, res) => {
-  const phoneNo = req.body.phoneNo;
+  const { phoneNo } = req.body
 
-  const userData = await userSchema.users.find({ phoneNo });
+  const userData = await userSchema.users.find({ phoneNo })
 
   if (userData) {
     return res
       .status(200)
-      .send({ code: 200, message: "User Details Feteched", data: userData });
-  } else {
-    res.status(400).send({ code: 400, message: "Error Can not fetch" });
+      .send({ code: 200, message: 'User Details Feteched', data: userData })
   }
-};
+  res.status(400).send({ code: 400, message: 'Error Can not fetch' })
+}
 
 const getbyname = async (req, res) => {
-  const fname = req.body.firstname;
-  const lname = req.body.lastname;
+  const fname = req.body.firstname
+  const lname = req.body.lastname
 
   const userData = await userSchema.users.find({
     firstname: fname,
     lastname: lname,
-  });
+  })
   if (userData) {
     return res
       .status(200)
-      .send({ code: 200, message: "User Details Feteched", data: userData });
-  } else {
-    res.status(400).send({ code: 400, message: "Error Can not fetch" });
+      .send({ code: 200, message: 'User Details Feteched', data: userData })
   }
-};
+  res.status(400).send({ code: 400, message: 'Error Can not fetch' })
+}
 
 const getbyusername = async (req, res) => {
   try {
-    const uname = req.body.username;
+    const uname = req.body.username
 
-    const userData = await userSchema.users.find({ username: uname });
+    const userData = await userSchema.users.find({ username: uname })
 
     if (userData) {
       return res
         .status(200)
-        .send({ code: 200, message: "User Feteched", data: userData });
-    } else {
-      res.status(400).send({ code: 400, message: "Error Can not fetch" });
+        .send({ code: 200, message: 'User Feteched', data: userData })
     }
+    res.status(400).send({ code: 400, message: 'Error Can not fetch' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 module.exports = {
   registerUser,
@@ -288,4 +278,4 @@ module.exports = {
   getbyusername,
   updateUser,
   updateAddress,
-};
+}

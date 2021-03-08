@@ -1,5 +1,6 @@
-const express = require("express");
-const router = express.Router();
+const express = require('express')
+
+const router = express.Router()
 const {
   registerUser,
   validateUser,
@@ -11,9 +12,9 @@ const {
   getbyusername,
   updateUser,
   updateAddress,
-} = require("../controllers/users");
-const auth = require("../middelware/auth");
-const { users } = require("../mongoDB/models/users");
+} = require('../controllers/users')
+const auth = require('../middelware/auth')
+const { users } = require('../mongoDB/models/users')
 
 const {
   isUsetrRegisterDataValid,
@@ -24,34 +25,34 @@ const {
   isNameValid,
   isUsernameValid,
   isAddressValid,
-} = require("../validators/users/");
+} = require('../validators/users')
 
 router.post(
-  "/user/register",
+  '/user/register',
   [isUsetrRegisterDataValid, isUsernameExist],
-  registerUser
-);
+  registerUser,
+)
 
 router.post(
-  "/user/validateUser",
+  '/user/validateUser',
   [isPasswordValid, isUsernameValid],
-  validateUser
-);
+  validateUser,
+)
 
-router.put("/user/updatePassword/:id", auth, [isPasswordValid], updatePassword);
+router.put('/user/updatePassword/:id', auth, [isPasswordValid], updatePassword)
 
-router.put("/user/updateUser/:id", [isUsetrRegisterDataValid], updateUser);
+router.put('/user/updateUser/:id', [isUsetrRegisterDataValid], updateUser)
 
-router.put("/user/updateEmail/:id", auth, [isEmailValid], updateEmail);
+router.put('/user/updateEmail/:id', auth, [isEmailValid], updateEmail)
 
-router.put("/user/updatePhone/:id", auth, [isPhonenoValid], updatephone);
+router.put('/user/updatePhone/:id', auth, [isPhonenoValid], updatephone)
 
-router.put("/user/updateAddress/:id", auth, [isAddressValid], updateAddress);
+router.put('/user/updateAddress/:id', auth, [isAddressValid], updateAddress)
 
-router.get("/user/getuserbyname", [isNameValid], getbyname);
+router.get('/user/getuserbyname', [isNameValid], getbyname)
 
-router.get("/user/getuserbyusername", auth, [isUsernameValid], getbyusername);
+router.get('/user/getuserbyusername', auth, [isUsernameValid], getbyusername)
 
-router.get("/user/getuserbyphoneno", auth, [isPhonenoValid], getbyphoneno);
+router.get('/user/getuserbyphoneno', auth, [isPhonenoValid], getbyphoneno)
 
-module.exports = router;
+module.exports = router

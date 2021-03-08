@@ -1,67 +1,67 @@
-const mongoose = require("mongoose");
-const accountSchema = require("../mongoDB/models/account");
-const transactionsSchema = require("../mongoDB/models/transaction");
-const sendEmailNotification = require("../services/emailNotification");
-const logger = require("../utils/winston");
+const mongoose = require('mongoose')
+const accountSchema = require('../mongoDB/models/account')
+const transactionsSchema = require('../mongoDB/models/transaction')
+const sendEmailNotification = require('../services/emailNotification')
+const logger = require('../utils/winston')
 
 const createNewAccoount = async (req, res) => {
   try {
-    throw Error("error");
-    const { username, closingBalance } = req.body;
-    const accountNumber = Date.now();
+    throw Error('error')
+    const { username, closingBalance } = req.body
+    const accountNumber = Date.now()
 
     const accontData = await accountSchema.accounts.create({
       userId: res.payload.id,
       accountNo: accountNumber,
       username,
       closingBalance,
-    });
+    })
 
     return res
       .status(200)
-      .send({ code: 200, message: "Account Created Successfully", accontData });
+      .send({ code: 200, message: 'Account Created Successfully', accontData })
   } catch (err) {
-    logger.log(err);
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    logger.log(err)
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 const getByAccountNumber = async (req, res) => {
   try {
-    const accountNo = req.body.accountNo;
+    const { accountNo } = req.body
     const accountData = await accountSchema.accounts.find({
       accountNo,
-    });
+    })
 
     if (accountData) {
       return res
         .status(200)
-        .send({ code: 200, message: "Account Feteched", data: accountData });
+        .send({ code: 200, message: 'Account Feteched', data: accountData })
     }
-    return res.status(400).send({ code: 400, message: "Error Can not fetch" });
+    return res.status(400).send({ code: 400, message: 'Error Can not fetch' })
   } catch (err) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 const getByUserName = async (req, res) => {
   try {
-    const uname = req.body.username;
-    const accountData = await accountSchema.accounts.find({ username: uname });
+    const uname = req.body.username
+    const accountData = await accountSchema.accounts.find({ username: uname })
     if (accountData) {
       return res
         .status(200)
-        .send({ code: 200, message: "Account Feteched", data: accountData });
+        .send({ code: 200, message: 'Account Feteched', data: accountData })
     }
-    return res.status(400).send({ code: 400, message: "Error Can not fetch" });
+    return res.status(400).send({ code: 400, message: 'Error Can not fetch' })
   } catch (err) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 const transferAmount = async (req, res) => {
   try {
-    const userId = res.payload.id;
+    const userId = res.payload.id
     const transferInfo = {
       from: {
         accountNo: req.body.from.accountNo,
@@ -72,39 +72,38 @@ const transferAmount = async (req, res) => {
         amount: req.body.to.amount,
       },
       remark: req.body.remark,
-    };
+    }
 
     const fromData = await accountSchema.accounts.findOne({
       accountNo: transferInfo.from.accountNo,
-    });
+    })
     const toData = await accountSchema.accounts.findOne({
       accountNo: transferInfo.to.accountNo,
-    });
+    })
 
     if (!fromData) {
       return res
         .status(400)
-        .send({ code: 400, message: "Account Number Not found" });
+        .send({ code: 400, message: 'Account Number Not found' })
     }
     if (!toData) {
       return res
         .status(400)
-        .send({ code: 400, message: "Account Number Not found" });
+        .send({ code: 400, message: 'Account Number Not found' })
     }
 
     if (Number(fromData.closingBalance) < Number(transferInfo.from.amount)) {
       return res.status(400).send({
         code: 400,
-        message: "Account balance is less than transfer amount",
-      });
+        message: 'Account balance is less than transfer amount',
+      })
     }
 
     const newFromClosingAmount =
-      parseFloat(fromData.closingBalance) -
-      parseFloat(transferInfo.from.amount);
+      parseFloat(fromData.closingBalance) - parseFloat(transferInfo.from.amount)
 
     const newtoClosingAmount =
-      parseFloat(toData[0].closingBalance) + parseFloat(transferInfo.to.amount);
+      parseFloat(toData[0].closingBalance) + parseFloat(transferInfo.to.amount)
 
     Promise.all([
       await accountSchema.accounts.updateOne(
@@ -113,7 +112,7 @@ const transferAmount = async (req, res) => {
         },
         {
           $set: { closingBalance: newFromClosingAmount },
-        }
+        },
       ),
       await accountSchema.accounts.updateOne(
         {
@@ -121,45 +120,43 @@ const transferAmount = async (req, res) => {
         },
         {
           $set: { closingBalance: newtoClosingAmount },
-        }
+        },
       ),
       await transactionsSchema.transactions.create({
         amount: transferInfo.from.amount || 0,
         transferedOn: new Date(),
         to: transferInfo.to.accountNo,
         from: transferInfo.from.accountNo,
-        remark: "SUCCESS",
+        remark: 'SUCCESS',
         userId,
       }),
-    ]);
+    ])
 
     Promise.all([
       await sendEmailNotification({
-        from: "satputenilesh0298@gmail.com",
-        to: "satputenilesh1998@gmail.com",
+        from: 'satputenilesh0298@gmail.com',
+        to: 'satputenilesh1998@gmail.com',
         text: `Avaibale balance id: ${newFromClosingAmount}`,
       }),
       await sendEmailNotification({
-        from: "satputenilesh0298@gmail.com",
-        to: "satputenilesh1998@gmail.com",
+        from: 'satputenilesh0298@gmail.com',
+        to: 'satputenilesh1998@gmail.com',
         text: `Account Credited amount: ${newtoClosingAmount}`,
       }),
-    ]);
+    ])
 
     return res
       .status(200)
-      .send({ code: 200, message: "Amount transfered sucessfully" });
+      .send({ code: 200, message: 'Amount transfered sucessfully' })
   } catch (error) {
-    res
-      .status(500)
-      .send({ code: 500, message: "Internal server error", error });
+    res.status(500).send({ code: 500, message: 'Internal server error', error })
   }
-};
+}
 
 const addPayees = async (req, res) => {
   try {
-    const accountNo = req.params.accountNo;
-    const payeesData = req.body.payees;
+    const { accountNo } = req.params
+    const payeesData = req.body.payees
 
     const payees = await accountSchema.accounts.updateOne(
       { accountNo, isClosed: false },
@@ -171,121 +168,117 @@ const addPayees = async (req, res) => {
             accountNo: payeesData.accountNo,
           },
         },
-      }
-    );
+      },
+    )
 
     return res
       .status(200)
-      .send({ code: 200, message: "Account Created Successfully", accontData });
+      .send({ code: 200, message: 'Account Created Successfully', accontData })
   } catch (error) {
-    res
-      .status(500)
-      .send({ code: 500, message: "Internal server error", error });
+    res.status(500).send({ code: 500, message: 'Internal server error', error })
   }
-};
+}
 
 const getPayees = async (req, res) => {
   try {
-    const accNumber = req.body.accountNo;
+    const accNumber = req.body.accountNo
     const accountData = await accountSchema.accounts.find({
       accountNo: accNumber,
-    });
+    })
 
     if (accountData && accountData.payees) {
       return res
         .status(200)
-        .send({ code: 200, message: "Account Feteched", data: accountData });
+        .send({ code: 200, message: 'Account Feteched', data: accountData })
     }
 
-    return res.status(400).send({ code: 400, message: "Error Can not fetch" });
+    return res.status(400).send({ code: 400, message: 'Error Can not fetch' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
-const deletePayees = async (req, res) => {};
+const deletePayees = async (req, res) => {}
 
 const closeAccount = async (req, res) => {
   try {
-    const accountNo = req.body.accountNo;
+    const { accountNo } = req.body
 
     if (!accountNo) {
       // Object.assign(obj, { email });
-      return res.status(400).send({ code: 400, message: "accountNo is empty" });
+      return res.status(400).send({ code: 400, message: 'accountNo is empty' })
     }
 
     await accountSchema.accounts.updateOne(
       {
-        accountNo: accountNo,
+        accountNo,
       },
       {
         $set: { isClosed: true },
-      }
-    );
-    return res.status(200).send({ code: 200, message: "Account Closed" });
+      },
+    )
+    return res.status(200).send({ code: 200, message: 'Account Closed' })
   } catch (error) {
-    res
-      .status(500)
-      .send({ code: 500, message: "Internal server error", error });
+    res.status(500).send({ code: 500, message: 'Internal server error', error })
   }
-};
+}
 
 const openClosedAccount = async (req, res) => {
   try {
-    const accountNo = req.body.accountNo;
+    const { accountNo } = req.body
 
     if (!accountNo) {
-      return res.status(400).send({ code: 400, message: "accountNo is empty" });
+      return res.status(400).send({ code: 400, message: 'accountNo is empty' })
     }
 
     await accountSchema.accounts.updateOne(
       {
-        accountNo: accountNo,
+        accountNo,
       },
       {
         $set: { isClosed: false },
-      }
-    );
-    return res.status(200).send({ code: 200, message: "Account Open again" });
+      },
+    )
+    return res.status(200).send({ code: 200, message: 'Account Open again' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 const lastActivated = async (req, res) => {
   try {
-    const currentDate = new Date();
+    const currentDate = new Date()
 
     return res
       .status(200)
-      .send({ code: 200, message: "Last Activated", currentDate });
+      .send({ code: 200, message: 'Last Activated', currentDate })
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 const updateLastActivated = async (req, res) => {
   try {
-    const accountNo = req.body.accountNo;
-    const currentDate = new Date();
+    const { accountNo } = req.body
+    const currentDate = new Date()
 
     if (!accountNo) {
-      res.status(400).send({ code: 400, message: "accountNo is empty" });
+      res.status(400).send({ code: 400, message: 'accountNo is empty' })
     }
 
     await accountSchema.accounts.updateOne(
       {
-        accountNo: accountNo,
+        accountNo,
       },
       {
         $set: { lastActive: currentDate },
-      }
-    );
-    res.status(200).send({ code: 200, message: "Last Activate Update" });
+      },
+    )
+    res.status(200).send({ code: 200, message: 'Last Activate Update' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: "Internal server error" });
+    res.status(500).send({ code: 500, message: 'Internal server error' })
   }
-};
+}
 
 module.exports = {
   createNewAccoount,
@@ -299,4 +292,4 @@ module.exports = {
   openClosedAccount,
   lastActivated,
   updateLastActivated,
-};
+}

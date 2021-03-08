@@ -1,22 +1,30 @@
-const express = require("express");
-const router = express.Router();
+const express = require('express')
+
+const router = express.Router()
 
 const {
-    logtransactionsummary,
-    transactionsummary,
-    generatestatement,
-} = require("../controllers/transaction");
+  logtransactionsummary,
+  transactionsummary,
+  generatestatement,
+} = require('../controllers/transaction')
 
-const {
-    isTransactionValid,
-} = require("../validators/transaction");
+const { isTransactionValid } = require('../validators/transaction')
 
-const auth = require("../middelware/auth");
+const auth = require('../middelware/auth')
 
-router.post("/transaction/logtransactionsummary",auth,[isTransactionValid],logtransactionsummary);
+router.post(
+  '/transaction/logtransactionsummary',
+  auth,
+  [isTransactionValid],
+  logtransactionsummary,
+)
 
-router.get("/transaction/transactionsummary/:accountNo",auth,transactionsummary);
+router.get(
+  '/transaction/transactionsummary/:accountNo',
+  auth,
+  transactionsummary,
+)
 
-router.get("/transaction/generatestatement",auth,generatestatement);
+router.get('/transaction/generatestatement', auth, generatestatement)
 
-module.exports = router;
+module.exports = router

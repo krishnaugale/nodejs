@@ -1,11 +1,11 @@
-//server.js
-//const http = require('http');
-//const express = require('express');
-const nodemailer = require('nodemailer');
-//const app = express.Router();
-const port = 3000;
+// server.js
+// const http = require('http');
+// const express = require('express');
+const nodemailer = require('nodemailer')
+// const app = express.Router();
+const port = 3000
 
-//app.post('/email', async (req, res) => { 
+// app.post('/email', async (req, res) => {
 //  try{
 //   const response = await send(req);
 //   console.log(response);
@@ -19,16 +19,16 @@ const port = 3000;
 //    message: error.message
 //   })
 //  }
-//})
+// })
 
-var transport = nodemailer.createTransport({
-    host: "smtp.mailtrap.io",
-    port: 2525,
-    auth: {
-      user: "e3c6eb0ee6fcfb",
-      pass: "8ed7f024e8c02a"
-    }
-  });
+const transport = nodemailer.createTransport({
+  host: 'smtp.mailtrap.io',
+  port: 2525,
+  auth: {
+    user: 'e3c6eb0ee6fcfb',
+    pass: '8ed7f024e8c02a',
+  },
+})
 
 /*
 Use in your req.body
@@ -42,27 +42,27 @@ Use in your req.body
  * Sends mail through aws-ses client
  * @param options Contains emails recipient, subject and text
  */
-const send = async (options) => {
+const send = async options => {
   const message = {
     from: `${options.fromName} <${options.fromEmail}>`,
     to: `${options.userEmail}`,
     subject: `${options.subject}`,
-    text: `${options.message}`
-  };
+    text: `${options.message}`,
+  }
 
-  const info = await transporter.sendMail(message);
-  console.log(info.messageId);
-  return info;
+  const info = await transporter.sendMail(message)
+  console.log(info.messageId)
+  return info
 }
 
-//const server = http.createServer((req, res) => {
+// const server = http.createServer((req, res) => {
 //  res.statusCode = 200;
 //    res.setHeader('Content-Type', 'text/plain');
 //    res.end('This is the Main App!\n');
-//});
+// });
 
-//server.listen(port, () => {
+// server.listen(port, () => {
 //    console.log(`Server running at http://localhost:${port}/`);
-//});
+// });
 
-module.exports = {send,transport}
+module.exports = { send, transport }

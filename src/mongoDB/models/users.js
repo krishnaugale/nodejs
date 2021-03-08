@@ -1,11 +1,11 @@
+const mongoose = require('mongoose')
 
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const { Schema } = mongoose
 
 const userSchema = new Schema({
   uuid: {
     type: String,
-    default: "",
+    default: '',
   },
   firstname: String,
   lastname: String,
@@ -22,4 +22,4 @@ const userSchema = new Schema({
     pin: String,
   },
 })
-exports.users = mongoose.model("users", userSchema);
+exports.users = mongoose.model('users', userSchema)

@@ -1,5 +1,6 @@
-const mongoose = require("mongoose");
-const { Schema } = mongoose;
+const mongoose = require('mongoose')
+
+const { Schema } = mongoose
 
 const transactionsSchema = new mongoose.Schema({
   amount: String,
@@ -8,6 +9,6 @@ const transactionsSchema = new mongoose.Schema({
   from: String,
   remark: String,
   userId: String,
-});
+})
 
-exports.transactions = mongoose.model("transactions", transactionsSchema);
+exports.transactions = mongoose.model('transactions', transactionsSchema)
