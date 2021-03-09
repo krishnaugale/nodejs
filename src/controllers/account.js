@@ -1,4 +1,3 @@
-const mongoose = require('mongoose')
 const accountSchema = require('../mongoDB/models/account')
 const transactionsSchema = require('../mongoDB/models/transaction')
 const sendEmailNotification = require('../services/emailNotification')
@@ -6,7 +5,6 @@ const logger = require('../utils/winston')
 
 const createNewAccoount = async (req, res) => {
   try {
-    throw Error('error')
     const { username, closingBalance } = req.body
     const accountNumber = Date.now()
 
@@ -24,6 +22,10 @@ const createNewAccoount = async (req, res) => {
     logger.log(err)
     res.status(500).send({ code: 500, message: 'Internal server error' })
   }
+
+  return res
+    .status(400)
+    .send({ code: 400, message: 'Sometning Went to be wrong !!' })
 }
 
 const getByAccountNumber = async (req, res) => {
@@ -42,6 +44,10 @@ const getByAccountNumber = async (req, res) => {
   } catch (err) {
     res.status(500).send({ code: 500, message: 'Internal server error' })
   }
+
+  return res
+    .status(400)
+    .send({ code: 400, message: 'Sometning Went to be wrong !!' })
 }
 
 const getByUserName = async (req, res) => {
@@ -57,6 +63,10 @@ const getByUserName = async (req, res) => {
   } catch (err) {
     res.status(500).send({ code: 500, message: 'Internal server error' })
   }
+
+  return res
+    .status(400)
+    .send({ code: 400, message: 'Sometning Went to be wrong !!' })
 }
 
 const transferAmount = async (req, res) => {
@@ -151,6 +161,10 @@ const transferAmount = async (req, res) => {
   } catch (error) {
     res.status(500).send({ code: 500, message: 'Internal server error', error })
   }
+
+  return res
+    .status(400)
+    .send({ code: 400, message: 'Sometning Went to be wrong !!' })
 }
 
 const addPayees = async (req, res) => {
@@ -158,7 +172,7 @@ const addPayees = async (req, res) => {
     const { accountNo } = req.params
     const payeesData = req.body.payees
 
-    const payees = await accountSchema.accounts.updateOne(
+    await accountSchema.accounts.updateOne(
       { accountNo, isClosed: false },
       {
         $addToSet: {
@@ -173,10 +187,13 @@ const addPayees = async (req, res) => {
 
     return res
       .status(200)
-      .send({ code: 200, message: 'Account Created Successfully', accontData })
+      .send({ code: 200, message: 'Account Created Successfully' })
   } catch (error) {
     res.status(500).send({ code: 500, message: 'Internal server error', error })
   }
+  return res
+    .status(400)
+    .send({ code: 400, message: 'Sometning Went to be wrong !!' })
 }
 
 const getPayees = async (req, res) => {
@@ -196,9 +213,13 @@ const getPayees = async (req, res) => {
   } catch (error) {
     res.status(500).send({ code: 500, message: 'Internal server error' })
   }
+
+  return res
+    .status(400)
+    .send({ code: 400, message: 'Sometning Went to be wrong !!' })
 }
 
-const deletePayees = async (req, res) => {}
+// const deletePayees = async (req, res) => {}
 
 const closeAccount = async (req, res) => {
   try {
@@ -221,6 +242,10 @@ const closeAccount = async (req, res) => {
   } catch (error) {
     res.status(500).send({ code: 500, message: 'Internal server error', error })
   }
+
+  return res
+    .status(400)
+    .send({ code: 400, message: 'Sometning Went to be wrong !!' })
 }
 
 const openClosedAccount = async (req, res) => {
@@ -243,6 +268,10 @@ const openClosedAccount = async (req, res) => {
   } catch (error) {
     res.status(500).send({ code: 500, message: 'Internal server error' })
   }
+
+  return res
+    .status(400)
+    .send({ code: 400, message: 'Sometning Went to be wrong !!' })
 }
 
 const lastActivated = async (req, res) => {
@@ -255,6 +284,10 @@ const lastActivated = async (req, res) => {
   } catch (error) {
     res.status(500).send({ code: 500, message: 'Internal server error' })
   }
+
+  return res
+    .status(400)
+    .send({ code: 400, message: 'Sometning Went to be wrong !!' })
 }
 
 const updateLastActivated = async (req, res) => {
@@ -278,6 +311,10 @@ const updateLastActivated = async (req, res) => {
   } catch (error) {
     res.status(500).send({ code: 500, message: 'Internal server error' })
   }
+
+  return res
+    .status(400)
+    .send({ code: 400, message: 'Sometning Went to be wrong !!' })
 }
 
 module.exports = {
@@ -287,7 +324,7 @@ module.exports = {
   transferAmount,
   addPayees,
   getPayees,
-  deletePayees,
+  // deletePayees,
   closeAccount,
   openClosedAccount,
   lastActivated,

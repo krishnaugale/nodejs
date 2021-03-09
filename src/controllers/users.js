@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const userSchema = require('../mongoDB/models/users')
 const jwtSign = require('../utils/jwtSign')
-const { encrypt, decrypt } = require('../utils/pswEncDec')
+const { encrypt } = require('../utils/pswEncDec')
 
 const registerUser = async (req, res) => {
   try {
@@ -29,7 +29,7 @@ const registerUser = async (req, res) => {
     }
 
     const token = jwtSign(tokenData, 'easybanking')
-    res
+    return res
       .status(200)
       .send({ code: 200, message: 'Data Saved sucessfully', token, userData })
   } catch (error) {
@@ -54,7 +54,9 @@ const validateUser = async (req, res) => {
     }
     return res.status(400).send({ code: 200, message: 'User not exists' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: 'Internal server error', error })
+    return res
+      .status(500)
+      .send({ code: 500, message: 'Internal server error', error })
   }
 }
 
@@ -87,7 +89,7 @@ const updatePassword = async (req, res) => {
     return res.status(400).send({ code: 400, message: 'Error Can not update' })
   } catch (error) {
     console.log(error)
-    res.status(500).send({ code: 500, message: 'Internal server error' })
+    return res.status(500).send({ code: 500, message: 'Internal server error' })
   }
 }
 
@@ -142,7 +144,7 @@ const updateUser = async (req, res) => {
     }
     return res.status(400).send({ code: 400, message: 'Error Can not update' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: 'Internal server error' })
+    return res.status(500).send({ code: 500, message: 'Internal server error' })
   }
 }
 
@@ -161,7 +163,7 @@ const updateEmail = async (req, res) => {
     )
     return res.status(200).send({ code: 200, message: 'email Updated' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: 'Internal server error' })
+    return res.status(500).send({ code: 500, message: 'Internal server error' })
   }
 }
 
@@ -180,7 +182,7 @@ const updatephone = async (req, res) => {
     )
     return res.status(200).send({ code: 200, message: 'phone Updated' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: 'Internal server error' })
+    return res.status(500).send({ code: 500, message: 'Internal server error' })
   }
 }
 
@@ -217,7 +219,7 @@ const updateAddress = async (req, res) => {
     )
     return res.status(200).send({ code: 200, message: 'Address Updated' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: 'Internal server error' })
+    return res.status(500).send({ code: 500, message: 'Internal server error' })
   }
 }
 
@@ -231,7 +233,7 @@ const getbyphoneno = async (req, res) => {
       .status(200)
       .send({ code: 200, message: 'User Details Feteched', data: userData })
   }
-  res.status(400).send({ code: 400, message: 'Error Can not fetch' })
+  return res.status(400).send({ code: 400, message: 'Error Can not fetch' })
 }
 
 const getbyname = async (req, res) => {
@@ -247,7 +249,7 @@ const getbyname = async (req, res) => {
       .status(200)
       .send({ code: 200, message: 'User Details Feteched', data: userData })
   }
-  res.status(400).send({ code: 400, message: 'Error Can not fetch' })
+  return res.status(400).send({ code: 400, message: 'Error Can not fetch' })
 }
 
 const getbyusername = async (req, res) => {
@@ -261,9 +263,9 @@ const getbyusername = async (req, res) => {
         .status(200)
         .send({ code: 200, message: 'User Feteched', data: userData })
     }
-    res.status(400).send({ code: 400, message: 'Error Can not fetch' })
+    return res.status(400).send({ code: 400, message: 'Error Can not fetch' })
   } catch (error) {
-    res.status(500).send({ code: 500, message: 'Internal server error' })
+    return res.status(500).send({ code: 500, message: 'Internal server error' })
   }
 }
 
