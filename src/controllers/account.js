@@ -170,7 +170,7 @@ const transferAmount = async (req, res) => {
 const addPayees = async (req, res) => {
   try {
     const payeesData = req.body.payees
-    const accountNo = req.body.accountNo
+    const { accountNo } = req.body
 
     await accountSchema.accounts.updateOne(
       { accountNo, isClosed: false },
