@@ -37,7 +37,7 @@ const logger = createLogger({
   levels: myCustomLevels.levels,
   transports: [
     new transports.DailyRotateFile({
-      filename: 'logger' + '/application-%DATE%.log',
+      filename: 'logger/application-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
       maxSize: '20m',
@@ -66,4 +66,4 @@ const logs = createLogger({
   ],
 })
 
-module.exports = logger
+module.exports = { logger, logs }

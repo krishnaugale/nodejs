@@ -11,7 +11,7 @@ const auth = (req, res, next) => {
   try {
     const payload = jwt.verify(token, 'easybanking')
     res.payload = payload
-    next()
+    return next()
   } catch (err) {
     return res.status(400).send({
       message: 'Access denied. Invalid authentication token.',

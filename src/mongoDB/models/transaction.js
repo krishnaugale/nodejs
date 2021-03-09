@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 
-const { Schema } = mongoose
-
 const transactionsSchema = new mongoose.Schema({
   amount: String,
   transferedOn: Date,
