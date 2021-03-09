@@ -1,7 +1,4 @@
 const Joi = require('joi')
-const { model } = require('mongoose')
-const accountSchema = require('../../mongoDB/models/account')
-const transactionsSchema = require('../../mongoDB/models/transaction')
 
 const iscreateNewAccoount = (req, res, next) => {
   const validateData = Joi.object({
@@ -39,7 +36,7 @@ const iscreateNewAccoount = (req, res, next) => {
       error: error.error.details[0],
     })
   }
-  next()
+  return next()
 }
 
 module.exports = {
