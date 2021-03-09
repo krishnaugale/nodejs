@@ -6,7 +6,7 @@ const logger = require("../utils/winston");
 
 const createNewAccoount = async (req, res) => {
   try {
-    throw Error('error')
+   // throw Error('error')
     const { username, closingBalance } = req.body;
     const accountNumber = Date.now();
 
@@ -21,7 +21,7 @@ const createNewAccoount = async (req, res) => {
       .status(200)
       .send({ code: 200, message: "Account Created Successfully", accontData });
   } catch (err) {
-    logger.log(err);
+     logger.log(err);
     res.status(500).send({ code: 500, message: "Internal server error" });
   }
 };
@@ -106,6 +106,7 @@ const transferAmount = async (req, res) => {
     const newtoClosingAmount =
       parseFloat(toData.closingBalance) + parseFloat(transferInfo.to.amount);
 
+      
     Promise.all([
       await accountSchema.accounts.updateOne(
         {
@@ -161,43 +162,49 @@ const transferAmount = async (req, res) => {
 
 const addPayees = async (req, res) => {
   try {
+    mongoose.set('useFindAndModify', false);
+    console.log("accountData");
     const accountNo = req.params.accountNo;
-    const payeesData = req.body.payees;
-
-    const payees = await accountSchema.accounts.updateOne(
-      { accountNo, isClosed: false },
+    const payeesData = req.body.payees ;
+    console.log(payeesData);
+    const payees = await accountSchema.accounts.findOneAndUpdate(
+      { accountNo: payeesData.accountNo  },  //isClosed: false
+       
       {
-        $addToSet: {
-          payees: {
-            firstname: payeesData.firstname,
-            lastname: payeesData.lastname,
-            accountNo: payeesData.accountNo,
-          },
-        },
-      }
-    );
+         $addToSet: {
+          payees: [{
 
-    return res
+                     firstname: payeesData.firstname ,
+                     lastname : payeesData.lastname, 
+                     
+                  }], 
+               },
+      });
+     
+    return 
+       res
       .status(200)
       .send({ code: 200, message: "Account Created Successfully", accontData });
   } catch (error) {
+    
     res
       .status(500)
-      .send({ code: 500, message: "Internal server error", error });
+      .send({ code: 500, message: "Internal server error", Error});
   }
+  
 };
 
 const getPayees = async (req, res) => {
   try {
     const accNumber = req.body.accountNo;
-    const accountData = await accountSchema.accounts.find({
+    const accountData = await accountSchema.accounts.findOne({
       accountNo: accNumber,
     });
 
-    if (accountData && accountData.payees) {
+    if (accountData) {
       return res
         .status(200)
-        .send({ code: 200, message: "Account Feteched", data: accountData });
+        .send({ code: 200, message: "Account Feteched", data: accountData.payees });
     }
 
     return res.status(400).send({ code: 400, message: "Error Can not fetch" });
@@ -206,7 +213,26 @@ const getPayees = async (req, res) => {
   }
 };
 
-const deletePayees = async (req, res) => {};
+const deletePayees = async (req, res) => {
+try {
+   console.log("accountData");
+   const accNumber = req.body.accountNo;
+   const accountData = await accountSchema.accounts.findOneAndDelete({
+   accountNo: accNumber,
+  });
+  console.log(accountData);
+  if (!accountData) {
+    return res
+      .status(200)
+      .send({ code: 200, message: "Account Deleted successfully " });
+  }
+
+  return res.status(400).send({ code: 400, message: "Error Can not fetch" });
+} catch (error) {
+  res.status(500).send({ code: 500, message: "Internal server error" });
+}
+};
+
 
 const closeAccount = async (req, res) => {
   try {

@@ -14,28 +14,34 @@ const {
     updateLastActivated
     } = require("../controllers/account");
     
-       const {
-              iscreateNewAccoount ,
-            } = require('../validators/account/')
+        const {
+                iscreateNewAccoount ,
+                isgetByAccountNumber ,
+                isgetByUserName ,
+                isaddPayees ,
+                isgetPayees ,
+                isdeletePayees ,
+                iscloseAccount  
+              } = require('../validators/account/')
       
     
         const auth = require("../middelware/auth");
 
-router.post("/account/createNewAccount", auth, [iscreateNewAccoount], createNewAccoount);
+router.post("/account/createNewAccount", auth, iscreateNewAccoount, createNewAccoount);
 
-router.get("/account/getByAccountNumber", auth, getByAccountNumber);
+router.get("/account/getByAccountNumber", auth, isgetByAccountNumber ,getByAccountNumber);
 
-router.get("/account/getByUserName", auth, getByUserName);
+router.get("/account/getByUserName", auth, isgetByUserName, getByUserName);
 
 router.post("/account/transferAmount", auth, transferAmount);
 
-router.post("/account/addPayees/:accountNo", auth, addPayees);
+router.post("/account/addPayees/:accountNo", auth ,isaddPayees, addPayees);
 
-router.get("/account/getPayees", auth, getPayees);
+router.get("/account/getPayees", auth, isgetPayees, getPayees);
 
-router.post("/account/deletePayees", auth, deletePayees);
+router.delete("/account/deletePayees", auth, isdeletePayees, deletePayees);
 
-router.post("/account/closeAccount", auth, closeAccount);
+router.post("/account/closeAccount", auth, iscloseAccount , closeAccount);
 
 router.post("/account/openClosedAccount", auth, openClosedAccount);
 
