@@ -1,28 +1,23 @@
-const winston = require('winston')
 require('winston-daily-rotate-file')
-const { createLogger, format, transports } = require('winston')
-
+const winston = require('winston')
+const fecha = require('fecha').format
+const { createLogger, format, transports } = winston
 const { combine, timestamp } = format
 
-const logFormat = winston.format.combine(
-  winston.format.colorize(),
-  winston.format.timestamp(),
-  winston.format.align(),
-  winston.format.printf(
-    info => `${info.timestamp} ${info.level}: ${info.message}`,
-  ),
-)
+const myFormat = format.printf(({ message }) => {
+  const funName = message.funName || ''
+  const date = fecha(new Date(), 'YYYY-MM-DD HH:mm:ss.SSS')
+  const state = message.state || 'SUCCESS'
+  const request =
+    Buffer.from(JSON.stringify(message.req)).toString('base64') || ''
+  const response = Buffer.from(JSON.stringify(message.res)).toString('base64')
 
-// const myFormat = printf(({ message }) => {
-//   var t = ''
-//   for (const name of Object.keys(message)) {
-//     // console.log(`${name} : ${message[name]} `);
-//     t += message[name] + '|~|'
-//     t += message[name] + '|~|'
+  let finalLog = `${
+    date + '|~|' + funName + '|~|' + request + '|~|' + state + '|~|' + response
+  }`
+  return finalLog
+})
 
-//   }
-//   return `|**|${t}`
-// })
 const myCustomLevels = {
   levels: {
     fl: 0,
@@ -33,37 +28,32 @@ const myCustomLevels = {
     con: 'blue',
   },
 }
+
 const logger = createLogger({
   levels: myCustomLevels.levels,
   transports: [
     new transports.DailyRotateFile({
-      filename: 'logger/application-%DATE%.log',
+      filename: 'logger' + '/application-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
       maxSize: '20m',
       maxFiles: '14d',
       level: 'fl',
-      format: logFormat,
+      format: combine(timestamp({ format: 'DD-MM-YYYY' }), myFormat),
     }),
   ],
 })
 
-const logs = createLogger({
-  transports: [
+//
+// If we're not in production then **ALSO** log to the `console`
+// with the colorized simple format.
+//
+if (process.env.NODE_ENV !== 'production') {
+  logger.add(
     new transports.Console({
-      level: 'info',
-      format: combine(
-        timestamp({ format: 'DD-MM-YYYY HH:mm:ss' }),
-        format.printf(({ message, timestamp }) => {
-          if (typeof message === 'object') {
-            // message=JSON.stringify(message);
-            return `${timestamp} ${message.stack}`
-          }
-          return `${timestamp} ${process.pid} ${message}`
-        }),
-      ),
-    }),
-  ],
-})
+      format: format.combine(format.colorize(), format.simple()),
+    })
+  )
+}
 
-module.exports = { logger, logs }
+module.exports = { logger }
