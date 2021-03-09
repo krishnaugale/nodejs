@@ -170,6 +170,7 @@ const transferAmount = async (req, res) => {
 const addPayees = async (req, res) => {
   try {
     const payeesData = req.body.payees
+    const accountNo = req.body.accountNo
 
     await accountSchema.accounts.updateOne(
       { accountNo, isClosed: false },
@@ -298,7 +299,7 @@ module.exports = {
   getByUserName,
   transferAmount,
   addPayees,
-  getPayees,
+  // getPayees,
   // deletePayees,
   closeAccount,
   openClosedAccount,

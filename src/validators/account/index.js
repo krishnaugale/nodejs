@@ -42,7 +42,7 @@ const isgetByUserName = (req, res, next) => {
     })
   }
 
-  next()
+  return next()
 }
 
 const isgetByAccountNumber = (req, res, next) => {
@@ -64,7 +64,7 @@ const isgetByAccountNumber = (req, res, next) => {
       error: error.error.details[0],
     })
   }
-  next()
+  return next()
 }
 
 //     const istransferAmount = (req, res, next) => {
@@ -104,7 +104,7 @@ const isaddPayees = (req, res, next) => {
       error: error.error.details[0],
     })
   }
-  next()
+  return next()
 }
 
 const isgetPayees = (req, res, next) => {
@@ -127,7 +127,7 @@ const isgetPayees = (req, res, next) => {
       error: error.error.details[0],
     })
   }
-  next()
+  return next()
 }
 
 const isdeletePayees = (req, res, next) => {
@@ -150,7 +150,7 @@ const isdeletePayees = (req, res, next) => {
       error: error.error.details[0],
     })
   }
-  next()
+  return next()
 }
 
 const iscloseAccount = (req, res, next) => {
@@ -173,7 +173,7 @@ const iscloseAccount = (req, res, next) => {
       error: error.error.details[0],
     })
   }
-  next()
+  return next()
 }
 
 //               const isopenClosedAccount = (req, res, next) => {
