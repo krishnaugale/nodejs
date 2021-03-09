@@ -9,6 +9,21 @@
             "date": 1614988709925,
             "name": "logger\\application-2021-03-05.log",
             "hash": "26f00f09327f1a18b2407369ae08dbaf"
+        },
+        {
+            "date": 1615177247355,
+            "name": "logger\\application-2021-03-07.log",
+            "hash": "e6eb42f32bd2776e91a58bdd43a0a00d"
+        },
+        {
+            "date": 1615227599382,
+            "name": "logger\\application-2021-03-08.log",
+            "hash": "b4b24ba466ce9210bfd3139390978144"
+        },
+        {
+            "date": 1615312437484,
+            "name": "logger\\application-2021-03-09.log",
+            "hash": "13527b6c716ce341c50c938a08a8c2d1"
         }
     ]
 }

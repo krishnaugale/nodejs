@@ -169,8 +169,8 @@ const transferAmount = async (req, res) => {
 
 const addPayees = async (req, res) => {
   try {
-    const { accountNo } = req.params
     const payeesData = req.body.payees
+    const { accountNo } = req.body
 
     await accountSchema.accounts.updateOne(
       { accountNo, isClosed: false },
@@ -185,31 +185,7 @@ const addPayees = async (req, res) => {
       },
     )
 
-    return res
-      .status(200)
-      .send({ code: 200, message: 'Account Created Successfully' })
-  } catch (error) {
-    res.status(500).send({ code: 500, message: 'Internal server error', error })
-  }
-  return res
-    .status(400)
-    .send({ code: 400, message: 'Sometning Went to be wrong !!' })
-}
-
-const getPayees = async (req, res) => {
-  try {
-    const accNumber = req.body.accountNo
-    const accountData = await accountSchema.accounts.find({
-      accountNo: accNumber,
-    })
-
-    if (accountData && accountData.payees) {
-      return res
-        .status(200)
-        .send({ code: 200, message: 'Account Feteched', data: accountData })
-    }
-
-    return res.status(400).send({ code: 400, message: 'Error Can not fetch' })
+    return res.status(200)
   } catch (error) {
     res.status(500).send({ code: 500, message: 'Internal server error' })
   }
@@ -323,7 +299,7 @@ module.exports = {
   getByUserName,
   transferAmount,
   addPayees,
-  getPayees,
+  // getPayees,
   // deletePayees,
   closeAccount,
   openClosedAccount,
