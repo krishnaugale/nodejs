@@ -5,13 +5,12 @@ const app = express()
 const bodyParser = require('body-parser')
 const routes = require('./src/routes')
 const dbConnect = require('./src/mongoDB/connection')
-const logger = require('./src/utils/winston')
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
 dbConnect()
-  .then(data =>
+  .then(() =>
     console.log('Database Connected mongodb://localhost:27017/easybanking'),
   )
   .catch(err => console.log(err))

@@ -1,11 +1,3 @@
-const path = require('path')
-
-const NODE_PATHS = ['src']
-
-const importResolver = {
-  paths: NODE_PATHS.map(p => path.resolve(p)),
-}
-
 module.exports = {
   parser: 'babel-eslint',
 

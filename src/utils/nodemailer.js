@@ -3,7 +3,6 @@
 // const express = require('express');
 const nodemailer = require('nodemailer')
 // const app = express.Router();
-const port = 3000
 
 // app.post('/email', async (req, res) => {
 //  try{
@@ -50,7 +49,7 @@ const send = async options => {
     text: `${options.message}`,
   }
 
-  const info = await transporter.sendMail(message)
+  const info = await transport.sendMail(message)
   console.log(info.messageId)
   return info
 }

@@ -14,7 +14,6 @@ const {
   updateAddress,
 } = require('../controllers/users')
 const auth = require('../middelware/auth')
-const { users } = require('../mongoDB/models/users')
 
 const {
   isUsetrRegisterDataValid,

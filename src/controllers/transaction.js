@@ -1,6 +1,4 @@
-const mongoose = require('mongoose')
 const transactionSchema = require('../mongoDB/models/transaction')
-const jwtSign = require('../utils/jwtSign')
 
 const logtransactionsummary = async (req, res) => {
   try {
@@ -37,8 +35,9 @@ const transactionsummary = async (req, res) => {
     })
 
     if (!transactionSummary) {
-      return
-      res.status(400).send({ code: 400, message: 'Account Number Not found' })
+      return res
+        .status(400)
+        .send({ code: 400, message: 'Account Number Not found' })
     }
     return res.status(200).send({
       code: 200,
@@ -52,6 +51,7 @@ const transactionsummary = async (req, res) => {
 
 const generatestatement = async (req, res) => {
   try {
+    throw Error('sssssss')
   } catch (error) {
     return res.status(500).send({ code: 500, message: 'Internal server error' })
   }

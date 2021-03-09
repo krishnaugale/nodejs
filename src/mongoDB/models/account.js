@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 
-const { Schema } = mongoose
-
 const accountSchema = new mongoose.Schema({
   userId: { type: String, default: '0' },
   username: { type: String, unique: true },

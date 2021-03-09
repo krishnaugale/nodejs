@@ -1,5 +1,4 @@
 const Joi = require('joi')
-const userSchema = require('../../mongoDB/models/users')
 
 const isTransactionValid = (req, res, next) => {
   const validateData = Joi.object({
@@ -30,7 +29,7 @@ const isTransactionValid = (req, res, next) => {
       message: 'Please Provide valid Data',
     })
   }
-  next()
+  return next()
 }
 
 module.exports = {

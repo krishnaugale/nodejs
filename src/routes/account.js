@@ -8,7 +8,7 @@ const {
   transferAmount,
   addPayees,
   getPayees,
-  deletePayees,
+  // deletePayees,
   closeAccount,
   openClosedAccount,
   lastActivated,
@@ -36,7 +36,7 @@ router.post('/account/addPayees/:accountNo', auth, addPayees)
 
 router.get('/account/getPayees', auth, getPayees)
 
-router.post('/account/deletePayees', auth, deletePayees)
+// router.post('/account/deletePayees', auth, deletePayees)
 
 router.post('/account/closeAccount', auth, closeAccount)
 

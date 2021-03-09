@@ -54,7 +54,7 @@ const isUsetrRegisterDataValid = (req, res, next) => {
       error: error.error.details[0],
     })
   }
-  nex()
+  return next()
 }
 
 const isUsernameExist = async (req, res, next) => {
@@ -68,7 +68,7 @@ const isUsernameExist = async (req, res, next) => {
       return res.status(400).send({ code: 400, message: 'User already exists' })
     }
 
-    next()
+    return next()
   } catch (error) {
     return res.status(500).send({ code: 500, message: 'Internal Server Error' })
   }
@@ -87,7 +87,7 @@ const isPasswordValid = async (req, res, next) => {
       .status(400)
       .send({ code: 400, message: 'Please Provide valid Password' })
   }
-  next()
+  return next()
 }
 
 const isEmailValid = async (req, res, next) => {
@@ -105,7 +105,7 @@ const isEmailValid = async (req, res, next) => {
       .send({ code: 400, message: 'Please Provide valid Email' })
   }
 
-  next()
+  return next()
 }
 
 const isPhonenoValid = async (req, res, next) => {
@@ -125,7 +125,7 @@ const isPhonenoValid = async (req, res, next) => {
       .status(400)
       .send({ code: 400, message: 'Please Provide valid Phone no' })
   }
-  next()
+  return next()
 }
 
 const isAddressValid = async (req, res, next) => {
@@ -156,7 +156,7 @@ const isAddressValid = async (req, res, next) => {
       .status(400)
       .send({ code: 400, message: 'Please Provide valid Address' })
   }
-  next()
+  return next()
 }
 
 const isNameValid = async (req, res, next) => {
@@ -181,7 +181,7 @@ const isNameValid = async (req, res, next) => {
       .status(400)
       .send({ code: 400, message: 'Please Provide valid Name' })
   }
-  next()
+  return next()
 }
 
 const isUsernameValid = async (req, res, next) => {
@@ -201,7 +201,7 @@ const isUsernameValid = async (req, res, next) => {
       .status(400)
       .send({ code: 400, message: 'Please Provide valid Username' })
   }
-  next()
+  return next()
 }
 
 module.exports = {
