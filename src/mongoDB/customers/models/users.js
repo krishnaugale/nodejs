@@ -2,6 +2,8 @@ const mongoose = require('mongoose')
 
 const { Schema } = mongoose
 
+const { easybanking } = require('../../connection')
+
 const userSchema = new Schema({
   uuid: {
     type: String,
@@ -22,4 +24,10 @@ const userSchema = new Schema({
     pin: String,
   },
 })
-exports.users = mongoose.model('users', userSchema)
+// exports.users = mongoose.model('users', userSchema)
+
+const userModel = easybanking.model('User', userSchema)
+
+module.exports = {
+  userModel,
+}
