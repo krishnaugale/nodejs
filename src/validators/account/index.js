@@ -7,7 +7,7 @@ const iscreateNewAccoount = (req, res, next) => {
       .min(3)
       .max(30)
       .required(),
-    closingBalence: Joi.string()
+      closingBalance: Joi.string()
       .min(0)
       .max(11)
       .required(),
@@ -63,6 +63,8 @@ const isgetByAccountNumber = (req, res, next) => {
       message: 'Please Provide valid Data',
       error: error.error.details[0],
     })
+  
+  
   }
   return next()
 }

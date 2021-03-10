@@ -1,10 +1,11 @@
 const accountSchema = require('../mongoDB/models/account')
 const transactionsSchema = require('../mongoDB/models/transaction')
 const sendEmailNotification = require('../services/emailNotification')
-const logger = require('../utils/winston')
+const {logger} = require('../utils/winston')
 
 const createNewAccoount = async (req, res) => {
   try {
+    throw Error("somethinge error");
     const { username, closingBalance } = req.body
     const accountNumber = Date.now()
 
@@ -19,7 +20,12 @@ const createNewAccoount = async (req, res) => {
       .status(200)
       .send({ code: 200, message: 'Account Created Successfully', accontData })
   } catch (err) {
-    logger.log(err)
+    logger.fl({
+      funName :"createNewAccoount",
+      state: "Error",
+      req: req.body,
+      res: {message : err.message || " "}
+    })
     res.status(500).send({ code: 500, message: 'Internal server error' })
   }
 
@@ -42,6 +48,13 @@ const getByAccountNumber = async (req, res) => {
     }
     return res.status(400).send({ code: 400, message: 'Error Can not fetch' })
   } catch (err) {
+    logger.fl({
+      funName :"getByAccountNumber",
+      state: "Error",
+      req: req.body,
+      res: {message : err.message || " "}
+    })
+
     res.status(500).send({ code: 500, message: 'Internal server error' })
   }
 
