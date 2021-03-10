@@ -1,7 +1,7 @@
-const accountSchema = require('../mongoDB/models/account')
-const transactionsSchema = require('../mongoDB/models/transaction')
-const sendEmailNotification = require('../services/emailNotification')
-const logger = require('../utils/winston')
+const accountSchema = require('../../../mongoDB/customers/models/account')
+const transactionsSchema = require('../../../mongoDB/customers/models/transaction')
+const sendEmailNotification = require('../../../utils/emailNotification')
+const logger = require('../../../utils/winston')
 
 const createNewAccoount = async (req, res) => {
   try {
