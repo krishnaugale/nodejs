@@ -49,8 +49,6 @@ const getOfferDetails = async (req, res) => {
       customerCode: userID,
     })
 
-    console.log(offerData)
-
     const offerDetails = await debitCardOfferDetailsSchema.debitCardOfferDetails.find(
       {
         offerId: {
