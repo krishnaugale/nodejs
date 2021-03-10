@@ -24,16 +24,3 @@ test:
   # Defines the names of branches and tags the job runs for
   only:
     - develop
-
-# Deploy job
-deploy:
-  type: deploy
-  # Attach Deploy job to Deploy stage
-  stage: deploy
-  # Config to use our Runner with Executor Shell
-  tags:
-    - my-shell-runner
-  script:
-    # Only copy changed files to project folder
-  only:
-    - develop
