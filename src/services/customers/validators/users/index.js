@@ -1,6 +1,5 @@
 const Joi = require('joi')
-// const userSchema = require("../mongoDB/models/users");
-const userSchema = require('../../mongoDB/models/users')
+const userSchema = require('../../../../mongoDB/customers/models/users')
 
 const isUsetrRegisterDataValid = (req, res, next) => {
   const validateData = Joi.object({

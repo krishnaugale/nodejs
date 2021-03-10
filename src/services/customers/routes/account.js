@@ -7,8 +7,8 @@ const {
   getByUserName,
   transferAmount,
   addPayees,
-  //getPayees,
-  //deletePayees,
+  // getPayees,
+  // deletePayees,
   closeAccount,
   openClosedAccount,
   lastActivated,
@@ -17,7 +17,7 @@ const {
 
 const { iscreateNewAccoount } = require('../validators/account')
 
-const auth = require('../middelware/auth')
+const auth = require('../../../middelware/auth')
 
 router.post(
   '/account/createNewAccount',
@@ -34,7 +34,11 @@ router.post('/account/transferAmount', auth, transferAmount)
 
 router.post('/account/addPayees/:accountNo', auth, addPayees)
 
+<<<<<<< HEAD:src/routes/account.js
 //router.get('/account/getPayees', auth, getPayees)
+=======
+// router.get('/account/getPayees', auth, getPayees)
+>>>>>>> faf2862daf9fb3308fada90e868b820de62e212b:src/services/customers/routes/account.js
 
 // router.post('/account/deletePayees', auth, deletePayees)
 

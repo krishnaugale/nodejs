@@ -1,4 +1,4 @@
-const transactionSchema = require('../mongoDB/models/transaction')
+const transactionSchema = require('../../../mongoDB/customers/models/transaction')
 
 const logtransactionsummary = async (req, res) => {
   try {
