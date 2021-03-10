@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
-const userSchema = require('../mongoDB/models/users')
-const jwtSign = require('../utils/jwtSign')
-const { encrypt } = require('../utils/pswEncDec')
+const userSchema = require('../../../mongoDB/customers/models/users')
+const jwtSign = require('../../../utils/jwtSign')
+const { encrypt } = require('../../../utils/pswEncDec')
 
 const registerUser = async (req, res) => {
   try {

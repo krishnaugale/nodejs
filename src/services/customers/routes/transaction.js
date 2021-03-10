@@ -10,7 +10,7 @@ const {
 
 const { isTransactionValid } = require('../validators/transaction')
 
-const auth = require('../middelware/auth')
+const auth = require('../../../middelware/auth')
 
 router.post(
   '/transaction/logtransactionsummary',

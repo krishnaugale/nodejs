@@ -11,9 +11,24 @@
             "hash": "26f00f09327f1a18b2407369ae08dbaf"
         },
         {
-            "date": 1615281127017,
+            "date": 1615177247355,
+            "name": "logger\\application-2021-03-07.log",
+            "hash": "e6eb42f32bd2776e91a58bdd43a0a00d"
+        },
+        {
+            "date": 1615227599382,
+            "name": "logger\\application-2021-03-08.log",
+            "hash": "b4b24ba466ce9210bfd3139390978144"
+        },
+        {
+            "date": 1615312437484,
             "name": "logger\\application-2021-03-09.log",
-            "hash": "79f7fa9863ca371baf7698fb63c77796"
+            "hash": "13527b6c716ce341c50c938a08a8c2d1"
+        },
+        {
+            "date": 1615349256878,
+            "name": "logger\\application-2021-03-10.log",
+            "hash": "69a9f78fbeb9b5fd513f86fc1ace821d"
         }
     ]
 }

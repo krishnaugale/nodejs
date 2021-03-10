@@ -13,7 +13,7 @@ const {
   updateUser,
   updateAddress,
 } = require('../controllers/users')
-const auth = require('../middelware/auth')
+const auth = require('../../../middelware/auth')
 
 const {
   isUsetrRegisterDataValid,

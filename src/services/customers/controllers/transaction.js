@@ -1,4 +1,4 @@
-const transactionSchema = require('../mongoDB/models/transaction')
+const transactionSchema = require('../../../mongoDB/customers/models/transaction')
 
 const logtransactionsummary = async (req, res) => {
   try {
@@ -18,6 +18,7 @@ const logtransactionsummary = async (req, res) => {
         .status(400)
         .send({ code: 400, message: 'Transaction not found' })
     }
+
     return res
       .status(200)
       .send({ code: 200, message: 'Transaction Fetch', transactionSummary })
