@@ -40,3 +40,22 @@ app.use((req, res, next) => {
 app.listen(3000, () =>
   console.log('Current Service => Customer :: Running on port number 3000'),
 )
+
+
+// dbcreditCard()
+//   .then(() =>
+//     console.log('Database Connected mongodb://localhost:27017/recommondation'),
+//   )
+//   .catch(err => console.log(err))
+
+// app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
+
+// app.use('/healthCheck1', (req, res) => {
+//   res.status(200).send({ code: 200, message: 'Its working ' })
+// })
+
+// app.use('/bankingapp/api', routes)
+
+// app.listen(3001, () =>
+//   console.log('info', 'Server Listing On Port Number 3001'),
+// )

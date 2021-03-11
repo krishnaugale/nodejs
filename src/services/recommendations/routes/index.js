@@ -1,5 +1,5 @@
-const debitCardOffer = require('./debitCardOffer')
+const creditCardOffer = require('./creditCardOffer')
 
-const routes = [debitCardOffer]
+const routes = [creditCardOffer]
 
 module.exports = routes
