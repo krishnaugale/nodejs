@@ -1,6 +1,7 @@
 require('winston-daily-rotate-file')
 const winston = require('winston')
 const fecha = require('fecha').format
+
 const { createLogger, format, transports } = winston
 const { combine, timestamp } = format
 
@@ -12,9 +13,7 @@ const myFormat = format.printf(({ message }) => {
     Buffer.from(JSON.stringify(message.req)).toString('base64') || ''
   const response = Buffer.from(JSON.stringify(message.res)).toString('base64')
 
-  let finalLog = `${
-    date + '|~|' + funName + '|~|' + request + '|~|' + state + '|~|' + response
-  }`
+  const finalLog = `${`${date}|~|${funName}|~|${request}|~|${state}|~|${response}`}`
   return finalLog
 })
 
@@ -33,7 +32,7 @@ const logger = createLogger({
   levels: myCustomLevels.levels,
   transports: [
     new transports.DailyRotateFile({
-      filename: 'logger' + '/application-%DATE%.log',
+      filename: 'logger/application-%DATE%.log',
       datePattern: 'YYYY-MM-DD',
       zippedArchive: true,
       maxSize: '20m',
@@ -52,7 +51,7 @@ if (process.env.NODE_ENV !== 'production') {
   logger.add(
     new transports.Console({
       format: format.combine(format.colorize(), format.simple()),
-    })
+    }),
   )
 }
 
