@@ -1,17 +1,17 @@
-const express = require('express')
+// const express = require('express')
 
-const router = express.Router()
+// const router = express.Router()
 
-const {
-  insertDebitCardOffer,
-  insertDebitCardOfferDetails,
-  getOfferDetails,
-} = require('../controllers/debitCard')
+// const {
+//   insertDebitCardOffer,
+//   insertDebitCardOfferDetails,
+//   getOfferDetails,
+// } = require('../controllers/debitCard')
 
-router.post('/insertOffer', insertDebitCardOffer)
+// router.post('/insertOffer', insertDebitCardOffer)
 
-router.post('/insertOfferDetails', insertDebitCardOfferDetails)
+// router.post('/insertOfferDetails', insertDebitCardOfferDetails)
 
-router.get('/getOfferDetails', getOfferDetails)
+// router.get('/getOfferDetails', getOfferDetails)
 
-module.exports = router
+// module.exports = router
