@@ -1,8 +1,6 @@
 const creditCardOfferSchema = require('../../../mongoDB/recomendations/models/creditCardOffer')
 const creditCardOfferDetailsSchema = require('../../../mongoDB/recomendations/models/creditCardOfferDetails')
 
-
-
 const insertCreditCardOffer = async (req, res) => {
         try {
           const offerData = await creditCardOfferSchema.creditCardOffer.create({
@@ -43,7 +41,7 @@ const insertCreditCardOffer = async (req, res) => {
           }
         }
         
-        const getOfferDetails = async (req, res) => {
+      const getOfferDetails = async (req, res) => {
            try
             {
             const  userId  = req.params.customerCode
