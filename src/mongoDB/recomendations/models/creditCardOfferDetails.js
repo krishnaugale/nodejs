@@ -5,13 +5,12 @@ const { Schema } = mongoose
 const { recomendation } = require('../../connection')
 
 const creditCardOfferDetailsSchema = new Schema({
-    offerId: String,
-    expiredOn: String,
-    offerTitle: String,
-    offerDescription: String,
-    cardImage: String,
-    promoCode: String,
-
+  offerId: String,
+  expiredOn: String,
+  offerTitle: String,
+  offerDescription: String,
+  cardImage: String,
+  promoCode: String,
 })
 const creditCardOfferDetails = recomendation.model(
   'creditCardOfferDetails',
@@ -19,5 +18,5 @@ const creditCardOfferDetails = recomendation.model(
 )
 
 module.exports = {
-    creditCardOfferDetails,
+  creditCardOfferDetails,
 }
