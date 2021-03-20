@@ -1,25 +1,8 @@
 const express = require('express')
-const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const routes = require('./routes/index')
-// const {
-//  easybanking,
-//  recomendation,
-// } = require('../../mongoDB/customers/connection')
 
 const app = express()
-
-// easybanking()
-//  .then(() =>
-//    console.log('Database Connected mongodb://localhost:27017/easybanking'),
-//  )
-//  .catch(err => console.log(err))
-
-// recomendation()
-//  .then(() =>
-//    console.log('Database Connected mongodb://localhost:27017/recomendation'),
-//  )
-//  .catch(err => console.log(err))
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
@@ -28,7 +11,6 @@ app.use('/healthCheck', (req, res) => {
   res.status(200).send({ code: 200, message: 'Its working' })
 })
 
-app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 app.use('/bankingapp/api', routes)
 
 app.use((req, res, next) => {

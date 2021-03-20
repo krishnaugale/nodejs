@@ -8,18 +8,18 @@ const makeNewConnection = uri => {
   })
 
   db.on('error', error => {
-    console.log(`MongoDB :: connection ${this.name} ${JSON.stringify(error)}`)
+    console.log(`MongoDB :: connection ${JSON.stringify(error)}`)
     db.close().catch(() =>
-      console.log(`MongoDB :: failed to close connection ${this.name}`),
+      console.log(`MongoDB :: failed to close connection ${uri}`),
     )
   })
 
   db.on('connected', () => {
-    console.log(`MongoDB :: connected`)
+    console.log(`MongoDB :: connected  ${uri}`)
   })
 
   db.on('disconnected', () => {
-    console.log(`MongoDB :: disconnected ${this.name}`)
+    console.log(`MongoDB :: disconnected ${uri}`)
   })
 
   return db
@@ -34,15 +34,3 @@ module.exports = {
   easybanking,
   recomendation,
 }
-
-// const mongoose = require('mongoose')
-
-// const dbConnect = async () => {
-//  await mongoose.connect('mongodb://localhost:27017/easybanking', {
-//    useNewUrlParser: true,
-//    useUnifiedTopology: true,
-//    useCreateIndex: true,
-//  })
-// }
-
-// module.exports = dbConnect

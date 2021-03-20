@@ -69,22 +69,28 @@ const isgetByAccountNumber = (req, res, next) => {
   return next()
 }
 
-//     const istransferAmount = (req, res, next) => {
-//       const validateData = Joi.object({
-//         username: Joi.string().min(3).max(30).required(),
-//         closingBalence : Joi.string().min(0).max(5).required(),
-//       });
-//       const error = validateData.validate(req.body);
+const istransferAmount = (req, res, next) => {
+  const validateData = Joi.object({
+    username: Joi.string()
+      .min(3)
+      .max(30)
+      .required(),
+    closingBalence: Joi.string()
+      .min(0)
+      .max(5)
+      .required(),
+  })
+  const error = validateData.validate(req.body)
 
-//       if (error && error.error && error.error.details.length) {
-//         return res.status(400).send({
-//           code: 400,
-//           message: "Please Provide valid Data",
-//           error: error.error.details[0],
-//         });
-//       }
-//       next();
-//     };
+  if (error && error.error && error.error.details.length) {
+    return res.status(400).send({
+      code: 400,
+      message: 'Please Provide valid Data',
+      error: error.error.details[0],
+    })
+  }
+  return next()
+}
 
 const isaddPayees = (req, res, next) => {
   const validateData = Joi.object({
@@ -178,68 +184,86 @@ const iscloseAccount = (req, res, next) => {
   return next()
 }
 
-//               const isopenClosedAccount = (req, res, next) => {
-//                 const validateData = Joi.object({
-//                   username: Joi.string().min(3).max(30).required(),
-//                   closingBalence : Joi.string().min(0).max(5).required(),
-//                 });
+const isopenClosedAccount = (req, res, next) => {
+  const validateData = Joi.object({
+    username: Joi.string()
+      .min(3)
+      .max(30)
+      .required(),
+    closingBalence: Joi.string()
+      .min(0)
+      .max(5)
+      .required(),
+  })
 
-//                 const error = validateData.validate(req.body);
+  const error = validateData.validate(req.body)
 
-//                 if (error && error.error && error.error.details.length) {
-//                   return res.status(400).send({
-//                     code: 400,
-//                     message: "Please Provide valid Data",
-//                     error: error.error.details[0],
-//                   });
-//                 }
-//                 next();
-//               };
+  if (error && error.error && error.error.details.length) {
+    return res.status(400).send({
+      code: 400,
+      message: 'Please Provide valid Data',
+      error: error.error.details[0],
+    })
+  }
+  return next()
+}
 
-//               const islastActivated = (req, res, next) => {
-//                 const validateData = Joi.object({
-//                   username: Joi.string().min(3).max(30).required(),
-//                   closingBalence : Joi.string().min(0).max(5).required(),
-//                 });
-//                 const error = validateData.validate(req.body);
+const islastActivated = (req, res, next) => {
+  const validateData = Joi.object({
+    username: Joi.string()
+      .min(3)
+      .max(30)
+      .required(),
+    closingBalence: Joi.string()
+      .min(0)
+      .max(5)
+      .required(),
+  })
+  const error = validateData.validate(req.body)
 
-//                 if (error && error.error && error.error.details.length) {
-//                   return res.status(400).send({
-//                     code: 400,
-//                     message: "Please Provide valid Data",
-//                     error: error.error.details[0],
-//                   });
-//                 }
-//                 next();
-//               };
+  if (error && error.error && error.error.details.length) {
+    return res.status(400).send({
+      code: 400,
+      message: 'Please Provide valid Data',
+      error: error.error.details[0],
+    })
+  }
+  return next()
+}
 
-//                 const isupdateLastActivated = (req, res, next) => {
-//                   const validateData = Joi.object({
-//                     username: Joi.string().min(3).max(30).required(),
-//                     closingBalence : Joi.string().min(0).max(5).required(),
-//                   });
-//                   const error = validateData.validate(req.body);
+const isupdateLastActivated = (req, res, next) => {
+  const validateData = Joi.object({
+    username: Joi.string()
+      .min(3)
+      .max(30)
+      .required(),
+    closingBalence: Joi.string()
+      .min(0)
+      .max(5)
+      .required(),
+  })
+  const error = validateData.validate(req.body)
 
-//                   if (error && error.error && error.error.details.length) {
-//                     return res.status(400).send({
-//                       code: 400,
-//                       message: "Please Provide valid Data",
-//                       error: error.error.details[0],
-//                     });
-//                   }
-//                   next();
-//                 };
+  if (error && error.error && error.error.details.length) {
+    return res.status(400).send({
+      code: 400,
+      message: 'Please Provide valid Data',
+      error: error.error.details[0],
+    })
+  }
+  return next()
+}
 
 module.exports = {
   iscreateNewAccoount,
   isgetByAccountNumber,
   isgetByUserName,
-  //       istransferAmount ,
+  istransferAmount,
   isaddPayees,
   isgetPayees,
   isdeletePayees,
   iscloseAccount,
-  //     isopenClosedAccount ,
-  //     islastActivated ,
-  //     isupdateLastActivated
+  isopenClosedAccount,
+  islastActivated,
+  isupdateLastActivated,
 }

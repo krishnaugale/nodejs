@@ -1,5 +1,5 @@
 node_modules/
 .env
 docs/jwt.txt
-logger/
+logger/**
 coverage/
