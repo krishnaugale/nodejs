@@ -5,7 +5,6 @@ const logger = require('../../../utils/winston')
 
 const createNewAccoount = async (req, res) => {
   try {
-    throw Error("somethinge error");
     const { username, closingBalance } = req.body
     const accountNumber = Date.now()
 
@@ -21,10 +20,10 @@ const createNewAccoount = async (req, res) => {
       .send({ code: 200, message: 'Account Created Successfully', accontData })
   } catch (err) {
     logger.fl({
-      funName :"createNewAccoount",
-      state: "Error",
+      funName: 'createNewAccoount',
+      state: 'Error',
       req: req.body,
-      res: {message : err.message || " "}
+      res: { message: err.message || ' ' },
     })
     res.status(500).send({ code: 500, message: 'Internal server error' })
   }
@@ -49,10 +48,10 @@ const getByAccountNumber = async (req, res) => {
     return res.status(400).send({ code: 400, message: 'Error Can not fetch' })
   } catch (err) {
     logger.fl({
-      funName :"getByAccountNumber",
-      state: "Error",
+      funName: 'getByAccountNumber',
+      state: 'Error',
       req: req.body,
-      res: {message : err.message || " "}
+      res: { message: err.message || ' ' },
     })
 
     res.status(500).send({ code: 500, message: 'Internal server error' })
