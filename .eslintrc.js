@@ -8,7 +8,7 @@ module.exports = {
   rules: {
     semi: ['warn', 'never'],
     'no-console': 'off',
-    'no-unused-vars': ['error', { argsIgnorePattern: '_' }],
+    'no-unused-vars': ['error'],
     'no-underscore-dangle': 'off',
     'import/prefer-default-export': 'off',
     'flowtype/no-types-missing-file-annotation': 'off',

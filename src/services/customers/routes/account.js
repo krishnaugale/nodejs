@@ -12,6 +12,8 @@ const {
   openClosedAccount,
   lastActivated,
   updateLastActivated,
+  getMovieByTitle,
+  getMovieByName,
 } = require('../controllers/account')
 
 const { iscreateNewAccoount } = require('../validators/account')
@@ -40,5 +42,9 @@ router.post('/account/openClosedAccount', auth, openClosedAccount)
 router.get('/account/lastActivated', auth, lastActivated)
 
 router.post('/account/updateLastActivated', auth, updateLastActivated)
+
+router.get('/movie/getByTitle', getMovieByTitle)
+
+router.get('/movie/getByName', getMovieByName)
 
 module.exports = router

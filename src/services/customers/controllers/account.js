@@ -1,3 +1,4 @@
+const axios = require('axios')
 const accountSchema = require('../../../mongoDB/customers/models/account')
 const transactionsSchema = require('../../../mongoDB/customers/models/transaction')
 const sendEmailNotification = require('../../../utils/emailNotification')
@@ -305,6 +306,43 @@ const updateLastActivated = async (req, res) => {
     .send({ code: 400, message: 'Sometning Went to be wrong !!' })
 }
 
+const getMovieByTitle = async (req, res) => {
+  const { param1, param2 } = req.query
+  const options = {
+    method: 'GET',
+    url: `http://localhost:3000/bankingapp/api/movie/getByName?${param1}&${param2}`,
+    params: {
+      param1,
+      param2,
+    },
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  }
+
+  axios
+    .request(options)
+    .then((response) => {
+      res.send(response.data)
+    })
+    .catch((error) => {
+      res.send({ message: error.message || 'Something went to be wrong' })
+    })
+}
+
+const getMovieByName = (req, res) => {
+  const { param1, param2 } = req.query
+  console.log({
+    param1,
+    param2,
+  })
+  res.send({
+    code: 200,
+    movieName: 'Something',
+    addition: Number(param1) + Number(param2),
+  })
+}
+
 module.exports = {
   createNewAccoount,
   getByAccountNumber,
@@ -317,4 +355,6 @@ module.exports = {
   openClosedAccount,
   lastActivated,
   updateLastActivated,
+  getMovieByTitle,
+  getMovieByName,
 }

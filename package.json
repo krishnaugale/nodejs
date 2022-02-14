@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon scripts/start.js",
+    "start": "node scripts/start.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write src/**/*.js",
@@ -23,6 +23,7 @@
   },
   "homepage": "https://gitlab.com/prashant246/easybanking#readme",
   "dependencies": {
+    "axios": "^0.21.1",
     "body-parser": "^1.19.0",
     "config": "^3.3.4",
     "crypto": "^1.0.1",
