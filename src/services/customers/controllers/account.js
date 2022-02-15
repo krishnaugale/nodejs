@@ -322,10 +322,10 @@ const getMovieByTitle = async (req, res) => {
 
   axios
     .request(options)
-    .then((response) => {
+    .then(response => {
       res.send(response.data)
     })
-    .catch((error) => {
+    .catch(error => {
       res.send({ message: error.message || 'Something went to be wrong' })
     })
 }

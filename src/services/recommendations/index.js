@@ -11,10 +11,6 @@ app.use('/healthCheck', (req, res) => {
   res.status(200).send({ code: 200, message: 'Its working' })
 })
 
-app.use((req, res) => {
-  console.log(req.url)
-})
-
 app.use('/bankingapp/api', route)
 
 app.use((req, res, next) => {
